@@ -3,6 +3,8 @@ import { MapPin, Heart, Sun, Map, Trophy, Waves, Square, Volleyball, Plus, Trash
 import { Participant } from './types';
 import PaymentModal from './components/PaymentModal';
 
+const fotos = ['foto1.jpeg', 'foto2.jpeg', 'foto3.jpeg', 'foto4.jpeg']
+  .map(f => `${import.meta.env.BASE_URL}images/${f}`);
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('hero');
@@ -129,7 +131,7 @@ const App = () => {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-3">
               <div className="grid grid-cols-2 gap-4">
-  {[foto1, foto2, foto3, foto4].map((src, idx) => (
+ {fotos.map((src, idx) => (
   <div
     key={idx}
     className="aspect-square rounded-lg overflow-hidden shadow-sm bg-gray-100"
@@ -190,7 +192,8 @@ const App = () => {
               <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
             </div>
              <div className="grid grid-cols-2 gap-4">  
-              {[foto1, foto2, foto3, foto4].map((src, idx) => (
+             {fotos.map((src, idx) => (
+
              <div
       key={idx}
       className="aspect-square rounded-lg overflow-hidden shadow-sm bg-gray-100"
