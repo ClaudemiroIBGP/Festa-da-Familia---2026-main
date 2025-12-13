@@ -2,6 +2,11 @@ import React, { useState, useRef } from 'react';
 import { MapPin, Heart, Sun, Map, Trophy, Waves, Square, Volleyball, Plus, Trash2, CheckCircle } from 'lucide-react';
 import { Participant } from './types';
 import PaymentModal from './components/PaymentModal';
+import foto1 from './assets/images/foto1.jpeg';
+import foto2 from './assets/images/foto2.jpeg';
+import foto3 from './assets/images/foto3.jpeg';
+import foto4 from './assets/images/foto4.jpeg';
+
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('hero');
@@ -128,24 +133,20 @@ const App = () => {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-3">
               <div className="grid grid-cols-2 gap-4">
-  {[
-    "/assets/images/foto1.jpeg",
-    "/assets/images/foto2.jpeg",
-    "/assets/images/foto3.jpeg",
-    "/assets/images/foto4.jpeg",
-  ].map((src, idx) => (
-    <div
-      key={idx}
-      className="aspect-square rounded-lg overflow-hidden shadow-sm bg-gray-100"
-    >
-      <img
-        src={src}
-        alt={`Foto ${idx + 1}`}
-        className="w-full h-full object-cover"
-        loading="lazy"
-      />
-    </div>
-  ))}
+  {[foto1, foto2, foto3, foto4].map((src, idx) => (
+  <div
+    key={idx}
+    className="aspect-square rounded-lg overflow-hidden shadow-sm bg-gray-100"
+  >
+    <img
+      src={src}
+      alt={`Foto ${idx + 1}`}
+      className="w-full h-full object-cover"
+      loading="lazy"
+    />
+  </div>
+))}
+
 </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-800">IBGP</h1>
