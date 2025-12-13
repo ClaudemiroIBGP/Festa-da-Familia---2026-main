@@ -4,7 +4,7 @@ import { Participant } from './types';
 import PaymentModal from './components/PaymentModal';
 
 const fotos = ['foto1.jpeg', 'foto2.jpeg', 'foto3.jpeg', 'foto4.jpeg']
-  .map(f => `${import.meta.env.BASE_URL}images/${f}`);
+  .map(f => `${import.meta.env.BASE_URL}${f}`);
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('hero');
