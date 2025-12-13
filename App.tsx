@@ -2,10 +2,6 @@ import React, { useState, useRef } from 'react';
 import { MapPin, Heart, Sun, Map, Trophy, Waves, Square, Volleyball, Plus, Trash2, CheckCircle } from 'lucide-react';
 import { Participant } from './types';
 import PaymentModal from './components/PaymentModal';
-import foto1 from './assets/images/foto1.jpeg';
-import foto2 from './assets/images/foto2.jpeg';
-import foto3 from './assets/images/foto3.jpeg';
-import foto4 from './assets/images/foto4.jpeg';
 
 
 const App = () => {
@@ -193,9 +189,22 @@ const App = () => {
               <p className="text-lg text-gray-700 leading-relaxed mb-6">A VI Festa da Família IBGP é um evento especial projetado para fortalecer os laços familiares em um ambiente acolhedor e cristão.</p>
               <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map((item) => (<div key={item} className="aspect-square bg-gradient-to-br from-blue-200 to-green-200 rounded-lg flex items-center justify-center"><Heart className="w-12 h-12 text-white opacity-80" /></div>))}
-            </div>
+             <div className="grid grid-cols-2 gap-4">  
+              {[foto1, foto2, foto3, foto4].map((src, idx) => (
+             <div
+      key={idx}
+      className="aspect-square rounded-lg overflow-hidden shadow-sm bg-gray-100"
+    >
+      <img
+        src={src}
+        alt={`Foto ${idx + 1}`}
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+  ))}
+</div>
+
           </div>
         </div>
       </section>
