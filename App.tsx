@@ -137,11 +137,12 @@ const App = () => {
     className="aspect-square rounded-lg overflow-hidden shadow-sm bg-gray-100"
   >
     <img
-      src={src}
-      alt={`Foto ${idx + 1}`}
-      className="w-full h-full object-cover"
-      loading="lazy"
-    />
+  src={src}
+  alt={`Foto ${idx + 1}`}
+  className="w-full h-full object-cover"
+  // REMOVA A LINHA: loading="lazy"
+/>
+    
   </div>
 ))}
 
