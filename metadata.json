@@ -1,0 +1,5 @@
+{
+  "name": "IBGP Event Registration",
+  "description": "An event registration and payment page for the VI Festa da Família IBGP, featuring integration with the PagBank API for payments.",
+  "requestFramePermissions": []
+}
