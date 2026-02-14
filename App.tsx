@@ -96,17 +96,28 @@ const App = () => {
       alert('Por favor, preencha todos os campos obrigatórios para todos os participantes.');
       return;
     }
-    
     if (paymentMethod === 'card_templo') {
-        setSuccessMessage({
-            title: 'Inscrição Agendada!',
-            body: 'Seus dados foram recebidos. Lembre-se de efetuar o pagamento com cartão diretamente no Templo para garantir sua participação.'
-        });
-        setRegistrationSuccess(true);
-        scrollToSection(registrationRef, 'registration');
-    } else {
-        setIsPaymentModalOpen(true);
-    }
+  const payload = {
+    timestamp: new Date().toISOString(),
+    paymentMethod,
+    paymentStatus: 'pending_card_templo',
+    totalAmount: calculateTotal(),
+    participants,
+  };
+
+  sendRegistrationToSheets(payload);
+
+  setSuccessMessage({
+    title: 'Inscrição Agendada!',
+    body: 'Seus dados foram recebidos.\nLembre-se de efetuar o pagamento com cartão diretamente no Templo para garantir sua participação.'
+  });
+  setRegistrationSuccess(true);
+  scrollToSection(registrationRef, 'registration');
+} else {
+  setIsPaymentModalOpen(true);
+}
+
+    
   };
   
   const ticketPrices = [
