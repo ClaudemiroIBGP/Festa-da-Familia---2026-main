@@ -16,7 +16,7 @@ const App = () => {
   
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'pix_avista' | 'pix_programado' | 'card_templo'>('pix_avista');
+  const [paymentMethod, setPaymentMethod] = useState<'Pix' | 'Dinheiro' | 'Card_templo'>('pix_avista');
   const [successMessage, setSuccessMessage] = useState({ title: '', body: '' });
 
 
