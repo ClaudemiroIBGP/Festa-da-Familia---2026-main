@@ -142,19 +142,31 @@ const App = () => {
       
       {isPaymentModalOpen && (
         <PaymentModal
-          totalAmount={totalAmount}
-          isInstallment={paymentMethod === 'pix_programado'}
-          onClose={() => setIsPaymentModalOpen(false)}
-          onSuccess={() => {
-            setIsPaymentModalOpen(false);
-            setSuccessMessage({
-                title: 'Inscrição Enviada com Sucesso!',
-                body: 'Seus dados foram recebidos. Após a confirmação do seu pagamento PIX, sua inscrição estará garantida. Nos vemos na festa!'
-            });
-            setRegistrationSuccess(true);
-            scrollToSection(registrationRef, 'registration');
-          }}
-        />
+  totalAmount={totalAmount}
+  isInstallment={paymentMethod === 'pix_programado'}
+  onClose={() => setIsPaymentModalOpen(false)}
+  onSuccess={async () => {
+    // ✅ grava na planilha quando o usuário "confirma" o PIX (simulado)
+    const payload = {
+      timestamp: new Date().toISOString(),
+      paymentMethod,
+      paymentStatus: paymentMethod === 'pix_programado' ? 'pending_pix_programado' : 'pending_pix_avista',
+      totalAmount,
+      participants,
+    };
+
+    await sendRegistrationToSheets(payload);
+
+    setIsPaymentModalOpen(false);
+    setSuccessMessage({
+      title: 'Inscrição Enviada com Sucesso!',
+      body: 'Seus dados foram recebidos. Após a confirmação do seu pagamento PIX, sua inscrição estará garantida. Nos vemos na festa!'
+    });
+    setRegistrationSuccess(true);
+    scrollToSection(registrationRef, 'registration');
+  }}
+/>
+
       )}
 
       <header className="bg-white shadow-lg sticky top-0 z-40">
