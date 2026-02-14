@@ -23,11 +23,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           <strong>R$ {totalAmount.toFixed(2).replace('.', ',')}</strong>
         </p>
 
-        {isInstallment && (
-          <p className="text-sm text-gray-500 mb-4">
-            Pagamento programado (simulação).
-          </p>
-        )}
+      <p className="text-sm text-gray-500 mb-4">
+  Pagamento via PIX (simulação).
+</p>
 
         <div className="bg-gray-100 rounded-lg p-4 mb-6">
           <p className="text-sm text-gray-600">
