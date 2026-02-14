@@ -3,6 +3,26 @@ import { MapPin, Heart, Sun, Map, Trophy, Waves, Square, Volleyball, Plus, Trash
 import { Participant } from './types';
 import PaymentModal from './components/PaymentModal';
 
+const SHEETS_ENDPOINT =
+  'https://script.google.com/macros/s/AKfycbzZqMHznHXqprPyvPYqVOUbBPr-QiUNjfdJz5hBNa7YZWOFgqhVDeD2T-U7HK9kjodL/exec';
+
+async function sendRegistrationToSheets(payload: any) {
+  // ✅ Mais estável com Apps Script em sites estáticos: enviar como form-urlencoded
+  // (evita preflight/CORS que costuma acontecer com JSON puro)
+  const body = new URLSearchParams({
+    payload: JSON.stringify(payload),
+  }).toString();
+
+  // mode:'no-cors' garante que o navegador envie mesmo sem CORS liberado no Apps Script.
+  // A resposta vira "opaque" e não dá pra validar ok/erro pelo frontend.
+  await fetch(SHEETS_ENDPOINT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+    body,
+  });
+}
+
 const fotos = ['foto1.jpeg', 'foto2.jpeg', 'foto3.jpeg', 'foto4.jpeg']
   .map(f => `${import.meta.env.BASE_URL}${f}`);
 
