@@ -24,7 +24,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </p>
 
       <p className="text-sm text-gray-500 mb-4">
-  Pagamento via PIX (simulação).
+  Pagamento via PIX.
 </p>
 
         <div className="bg-gray-100 rounded-lg p-4 mb-6">
