@@ -1,21 +1,16 @@
-import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, '.', '');
+// ajuste se mudar o nome do repositório
+const repo = 'Festa-da-Familia---2026-main'
 
-  const repoName = 'Festa-da-Familia---2026-main';
-  const isProd = mode === 'production';
-
-  return {
-    plugins: [react()],
-    base: isProd ? `/${repoName}/` : '/',
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, '.'),
-      },
-    },
-    // ...o resto do seu config (se tiver)
-  };
-});
+export default defineConfig({
+  plugins: [react()],
+  base: `/${repo}/`,
+  server: {
+    port: 3000,
+  },
+  build: {
+    outDir: 'dist',
+  },
+})

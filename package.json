@@ -1,16 +1,16 @@
 {
   "name": "ibgp-event-registration",
   "homepage": "https://claudemiroibgp.github.io/Festa-da-Familia---2026-main",
-
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
     "lucide-react": "^0.552.0",
     "react": "^19.2.0",
