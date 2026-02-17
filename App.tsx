@@ -1,278 +1,504 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 type ParticipantType = "adulto" | "crianca";
 
 type Participant = {
   nome: string;
-  telefone: string; // só dígitos
+  telefone: string; // vamos salvar só dígitos
   tipo: ParticipantType;
   valor: number;
 };
 
-type Payment = "PIX" | "DINHEIRO" | "CARTAO_Templo";
+type PaymentType = "pix" | "dinheiro" | "cartao_templo";
 
-// ✅ Se você não estiver usando .env COMMITADO no GitHub Pages,
-// deixe o endpoint aqui (URL NOVA /exec).
-const FALLBACK_ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbzseS5udGt-BeLQVC181ZcujcxcaOufOLZov0-_xvip9vvnwmGuO0SCJAvktaQyP0ag/exec";
-
-
-  
-// Se você tiver VITE_FORM_ENDPOINT em um .env (e fizer commit dele), ele sobrescreve.
 const ENDPOINT =
-  (import.meta as any)?.env?.VITE_FORM_ENDPOINT?.trim?.() || FALLBACK_ENDPOINT;
+  "COLE_AQUI_SUA_URL_EXEC"; // ex.: https://script.google.com/macros/s/XXXX/exec
+
+function onlyDigits(v: string) {
+  return (v || "").replace(/\D/g, "");
+}
+
+function moneyBRL(v: number) {
+  const n = Number.isFinite(v) ? v : 0;
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
 
 export default function App() {
   const [participantes, setParticipantes] = useState<Participant[]>([
     { nome: "", telefone: "", tipo: "adulto", valor: 100 },
   ]);
 
-  const [pagamento, setPagamento] = useState<Payment>("PIX");
+  const [pagamento, setPagamento] = useState<PaymentType>("pix");
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  const [debugResposta, setDebugResposta] = useState<string>("");
 
-  const total = useMemo(
-    () => participantes.reduce((s, p) => s + (Number(p.valor) || 0), 0),
-    [participantes]
-  );
+  const total = useMemo(() => {
+    return participantes.reduce((acc, p) => acc + (Number(p.valor) || 0), 0);
+  }, [participantes]);
 
-  function adicionarParticipante() {
+  function addParticipante() {
     setParticipantes((prev) => [
       ...prev,
       { nome: "", telefone: "", tipo: "adulto", valor: 100 },
     ]);
   }
 
-  function removerParticipante(index: number) {
+  function removeParticipante(index: number) {
     if (participantes.length <= 1) return;
     setParticipantes((prev) => prev.filter((_, i) => i !== index));
   }
 
-  function atualizarParticipante(
+  function updateParticipante(
     index: number,
-    campo: keyof Participant,
-    valor: string
+    field: keyof Participant,
+    value: string
   ) {
     setParticipantes((prev) => {
-      const copia = [...prev];
+      const next = [...prev];
+      const p = { ...next[index] };
 
-      if (campo === "telefone") {
-        // só dígitos
-        valor = valor.replace(/\D/g, "");
+      if (field === "telefone") {
+        p.telefone = onlyDigits(value);
+      } else if (field === "nome") {
+        p.nome = value;
+      } else if (field === "tipo") {
+        const t = value as ParticipantType;
+        p.tipo = t;
+        p.valor = t === "adulto" ? 100 : 50;
+      } else if (field === "valor") {
+        p.valor = Number(value) || 0;
       }
 
-      (copia[index] as any)[campo] = valor;
-
-      if (campo === "tipo") {
-        const t = valor as ParticipantType;
-        copia[index].valor = t === "adulto" ? 100 : 50;
-      }
-
-      return copia;
+      next[index] = p;
+      return next;
     });
   }
 
   function validar(): string | null {
-    if (!ENDPOINT || !ENDPOINT.includes("script.google.com")) {
-      return "Endpoint do formulário não configurado. Confirme a URL do Web App (/exec).";
+    if (!ENDPOINT || ENDPOINT.includes("COLE_AQUI")) {
+      return "Você não configurou o ENDPOINT. Cole a URL /exec do Web App do Apps Script no App.tsx.";
     }
 
     const resp = participantes[0];
     if (!resp?.nome?.trim()) return "Preencha o NOME do responsável (1º participante).";
     if (!resp?.telefone?.trim()) return "Preencha o TELEFONE do responsável (1º participante).";
+    if (resp.telefone.length < 10) return "Telefone do responsável parece curto. Use DDD + número (apenas dígitos).";
 
-    // valida pelo menos 8 dígitos (ajuste se quiser)
-    if (resp.telefone.replace(/\D/g, "").length < 8) {
-      return "Telefone do responsável parece curto. Digite apenas números, com DDD.";
+    // opcional: exigir nome para todos os participantes
+    for (let i = 0; i < participantes.length; i++) {
+      if (!participantes[i].nome.trim()) return `Preencha o nome do participante #${i + 1}.`;
     }
 
-    // opcional: valida nomes dos demais participantes se quiser
     return null;
   }
 
   async function enviar() {
-  setErro(null);
-  setSucesso(false);
+    setErro(null);
+    setDebugResposta("");
+    setSucesso(false);
 
-  const msg = validar();
-  if (msg) {
-    setErro(msg);
-    return;
-  }
-
-  setEnviando(true);
-
-  const responsavel = participantes[0];
-  const payload = {
-    pagamento,
-    total,
-    responsavel: responsavel.nome,
-    telefoneResponsavel: responsavel.telefone,
-    participantes,
-  };
-
-  try {
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      body: JSON.stringify({
-        action: "criar_inscricao",
-        data: payload,
-      }),
-      redirect: "follow",
-    });
-
-    const txt = await res.text(); // Apps Script costuma ser mais estável assim
-
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${txt || "Sem resposta do servidor"}`);
+    const msg = validar();
+    if (msg) {
+      setErro(msg);
+      return;
     }
 
-    // Exigimos retorno JSON { ok: true }
-    let out: any = null;
+    setEnviando(true);
+
+    const payload = {
+      pagamento,
+      total,
+      participantes,
+    };
+
     try {
-      out = txt ? JSON.parse(txt) : null;
-    } catch {
-      throw new Error(`Resposta não-JSON do Web App: ${txt || "(vazio)"}`);
-    }
+      // IMPORTANTE: sem headers para evitar preflight/CORS chato com Apps Script
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        redirect: "follow",
+        body: JSON.stringify({ data: payload }),
+      });
 
-    if (!out || out.ok !== true) {
-      throw new Error(out?.error || `Web App não confirmou ok: ${txt}`);
-    }
+      const txt = await res.text();
+      setDebugResposta(txt);
 
-    setSucesso(true);
-  } catch (e: any) {
-    setErro(e?.message || "Falha ao enviar para a planilha.");
-  } finally {
-    setEnviando(false);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}. Resposta: ${txt || "(vazia)"}`);
+      }
+
+      let out: any;
+      try {
+        out = txt ? JSON.parse(txt) : null;
+      } catch {
+        throw new Error(`Resposta do Apps Script não é JSON: ${txt || "(vazia)"}`);
+      }
+
+      if (!out || out.ok !== true) {
+        throw new Error(out?.error || `Apps Script não confirmou ok:true. Resposta: ${txt}`);
+      }
+
+      setSucesso(true);
+    } catch (e: any) {
+      setErro(e?.message || "Falha ao enviar para a planilha.");
+    } finally {
+      setEnviando(false);
+    }
   }
-}
 
+  function resetForm() {
+    setParticipantes([{ nome: "", telefone: "", tipo: "adulto", valor: 100 }]);
+    setPagamento("pix");
+    setErro(null);
+    setDebugResposta("");
+    setSucesso(false);
+  }
+
+  // UI simples sem depender de Tailwind (funciona em qualquer projeto)
+  const styles: Record<string, React.CSSProperties> = {
+    page: {
+      fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial",
+      background: "#f6f8fb",
+      minHeight: "100vh",
+      padding: 20,
+    },
+    container: {
+      maxWidth: 900,
+      margin: "0 auto",
+    },
+    header: {
+      display: "flex",
+      alignItems: "center",
+      gap: 12,
+      marginBottom: 16,
+    },
+    brand: {
+      fontWeight: 800,
+      fontSize: 22,
+      lineHeight: 1.1,
+    },
+    subtitle: {
+      marginTop: 2,
+      fontSize: 12,
+      color: "#6b7280",
+      fontWeight: 600,
+    },
+    card: {
+      background: "white",
+      borderRadius: 14,
+      boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
+      padding: 16,
+      marginBottom: 14,
+      border: "1px solid #eef2f7",
+    },
+    row: {
+      display: "grid",
+      gridTemplateColumns: "1.3fr 1fr 0.8fr 0.6fr",
+      gap: 10,
+    },
+    label: {
+      fontSize: 12,
+      color: "#6b7280",
+      fontWeight: 700,
+      marginBottom: 6,
+      display: "block",
+    },
+    input: {
+      width: "100%",
+      padding: "10px 12px",
+      borderRadius: 10,
+      border: "1px solid #dbe3ef",
+      outline: "none",
+      fontSize: 14,
+    },
+    select: {
+      width: "100%",
+      padding: "10px 12px",
+      borderRadius: 10,
+      border: "1px solid #dbe3ef",
+      outline: "none",
+      fontSize: 14,
+      background: "#fff",
+    },
+    btn: {
+      border: "none",
+      borderRadius: 12,
+      padding: "12px 14px",
+      cursor: "pointer",
+      fontWeight: 800,
+    },
+    btnPrimary: {
+      background: "#1d4ed8",
+      color: "white",
+    },
+    btnGreen: {
+      background: "#16a34a",
+      color: "white",
+    },
+    btnGhost: {
+      background: "#eef2ff",
+      color: "#1d4ed8",
+    },
+    btnDanger: {
+      background: "#fee2e2",
+      color: "#991b1b",
+    },
+    error: {
+      background: "#fef2f2",
+      border: "1px solid #fecaca",
+      color: "#991b1b",
+      borderRadius: 12,
+      padding: 12,
+      fontWeight: 700,
+      marginBottom: 14,
+      whiteSpace: "pre-wrap",
+    },
+    ok: {
+      background: "#ecfdf5",
+      border: "1px solid #bbf7d0",
+      color: "#065f46",
+      borderRadius: 14,
+      padding: 18,
+      textAlign: "center" as const,
+    },
+    totalBox: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      background: "#e0f2fe",
+      border: "1px solid #bae6fd",
+      borderRadius: 14,
+      padding: 14,
+      fontWeight: 900,
+      fontSize: 18,
+    },
+    small: {
+      fontSize: 12,
+      color: "#6b7280",
+      marginTop: 10,
+      wordBreak: "break-all" as const,
+    },
+  };
 
   if (sucesso) {
     return (
-      <div className="p-10 text-center bg-white rounded-xl shadow-lg max-w-md mx-auto mt-20">
-        <h1 className="text-2xl font-bold text-green-600">
-          Inscrição Confirmada! ✅
-        </h1>
-        <p className="mt-2 text-gray-600">
-          Seus dados foram enviados para registro.
-        </p>
+      <div style={styles.page}>
+        <div style={styles.container}>
+          <div style={styles.card}>
+            <div style={styles.ok}>
+              <div style={{ fontSize: 26, fontWeight: 900 }}>
+                Inscrição Confirmada! ✅
+              </div>
+              <div style={{ marginTop: 8, color: "#047857", fontWeight: 700 }}>
+                Seus dados foram gravados na planilha.
+              </div>
 
-        <button
-          className="mt-6 bg-blue-600 text-white px-6 py-2 rounded"
-          onClick={() => window.location.reload()}
-        >
-          Fazer Nova Inscrição
-        </button>
+              <button
+                style={{ ...styles.btn, ...styles.btnPrimary, marginTop: 16 }}
+                onClick={resetForm}
+              >
+                Fazer nova inscrição
+              </button>
 
-        <p className="mt-4 text-xs text-gray-500 break-all">
-          Endpoint: {ENDPOINT}
-        </p>
+              <div style={styles.small}>
+                Endpoint em uso: <b>{ENDPOINT}</b>
+              </div>
+
+              {/* Debug opcional */}
+              {debugResposta && (
+                <div style={{ ...styles.small, marginTop: 12 }}>
+                  Resposta do servidor: {debugResposta}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold">Festa da Família 2026 - IBGP</h1>
-
-      <div className="text-sm text-gray-600">
-        <p>
-          <b>Responsável:</b> preencha o 1º participante com seu nome e telefone.
-        </p>
-      </div>
-
-      {erro && (
-        <div className="border border-red-200 bg-red-50 text-red-700 p-3 rounded">
-          {erro}
+    <div style={styles.page}>
+      <div style={styles.container}>
+        <div style={styles.header}>
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              background: "#e0f2fe",
+              display: "grid",
+              placeItems: "center",
+              fontWeight: 900,
+              color: "#0369a1",
+            }}
+          >
+            ♥
+          </div>
+          <div>
+            <div style={styles.brand}>IBGP</div>
+            <div style={styles.subtitle}>VI Festa da Família</div>
+          </div>
         </div>
-      )}
 
-      {participantes.map((p, i) => (
-        <div
-          key={i}
-          className="border p-4 rounded-xl bg-white shadow-sm space-y-3 relative"
-        >
-          {participantes.length > 1 && (
+        {erro && <div style={styles.error}>{erro}</div>}
+
+        <div style={styles.card}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+            <div style={{ fontWeight: 900, fontSize: 18 }}>
+              Participantes
+            </div>
+
             <button
-              onClick={() => removerParticipante(i)}
-              className="absolute right-4 top-4 text-red-500 text-xs font-bold uppercase"
+              style={{ ...styles.btn, ...styles.btnGreen }}
+              onClick={addParticipante}
               type="button"
             >
-              Remover
+              + Adicionar Participante
             </button>
-          )}
+          </div>
 
-          <input
-            placeholder={i === 0 ? "Nome do Responsável" : "Nome do Participante"}
-            className="border p-2 w-full rounded"
-            value={p.nome}
-            onChange={(e) => atualizarParticipante(i, "nome", e.target.value)}
-          />
-
-          <input
-            placeholder={i === 0 ? "Telefone do Responsável (DDD + número)" : "Telefone (se houver)"}
-            className="border p-2 w-full rounded font-mono"
-            value={p.telefone}
-            onChange={(e) =>
-              atualizarParticipante(i, "telefone", e.target.value)
-            }
-          />
-
-          <select
-            className="border p-2 w-full rounded bg-gray-50"
-            value={p.tipo}
-            onChange={(e) => atualizarParticipante(i, "tipo", e.target.value)}
-          >
-            <option value="adulto">Adulto – R$ 100</option>
-            <option value="crianca">Criança – R$ 50</option>
-          </select>
+          <div style={{ marginTop: 10, color: "#6b7280", fontSize: 13 }}>
+            O <b>1º participante</b> será tratado como <b>responsável</b> (nome e telefone obrigatórios).
+          </div>
         </div>
-      ))}
 
-      <button
-        onClick={adicionarParticipante}
-        className="bg-green-600 text-white px-4 py-2 rounded font-bold"
-        type="button"
-      >
-        + Adicionar Participante
-      </button>
+        {participantes.map((p, i) => (
+          <div style={styles.card} key={i}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ fontWeight: 900 }}>
+                {i === 0 ? "Responsável" : `Participante #${i + 1}`}
+              </div>
 
-      <div className="border p-4 rounded-xl bg-gray-50 space-y-3">
-        <h2 className="font-bold">Forma de pagamento</h2>
+              {participantes.length > 1 && (
+                <button
+                  style={{ ...styles.btn, ...styles.btnDanger }}
+                  onClick={() => removeParticipante(i)}
+                  type="button"
+                >
+                  Remover
+                </button>
+              )}
+            </div>
 
-        {(["PIX", "DINHEIRO", "CARTAO_Templo"] as Payment[]).map((opt) => (
-          <label key={opt} className="block cursor-pointer">
-            <input
-              type="radio"
-              checked={pagamento === opt}
-              onChange={() => setPagamento(opt)}
-            />{" "}
-            {opt.replace("_", " ")}
-          </label>
+            <div style={{ height: 10 }} />
+
+            <div style={styles.row}>
+              <div>
+                <label style={styles.label}>Nome</label>
+                <input
+                  style={styles.input}
+                  value={p.nome}
+                  onChange={(e) => updateParticipante(i, "nome", e.target.value)}
+                  placeholder={i === 0 ? "Nome do responsável" : "Nome do participante"}
+                />
+              </div>
+
+              <div>
+                <label style={styles.label}>Telefone (apenas números)</label>
+                <input
+                  style={styles.input}
+                  value={p.telefone}
+                  onChange={(e) => updateParticipante(i, "telefone", e.target.value)}
+                  placeholder="61999999999"
+                />
+              </div>
+
+              <div>
+                <label style={styles.label}>Tipo</label>
+                <select
+                  style={styles.select}
+                  value={p.tipo}
+                  onChange={(e) => updateParticipante(i, "tipo", e.target.value)}
+                >
+                  <option value="adulto">Adulto</option>
+                  <option value="crianca">Criança</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={styles.label}>Valor</label>
+                <input
+                  style={styles.input}
+                  value={String(p.valor)}
+                  onChange={(e) => updateParticipante(i, "valor", e.target.value)}
+                  inputMode="numeric"
+                />
+              </div>
+            </div>
+          </div>
         ))}
+
+        <div style={styles.card}>
+          <div style={{ fontWeight: 900, fontSize: 18, marginBottom: 10 }}>
+            Forma de Pagamento
+          </div>
+
+          <div style={{ display: "grid", gap: 10 }}>
+            <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <input
+                type="radio"
+                checked={pagamento === "pix"}
+                onChange={() => setPagamento("pix")}
+              />
+              PIX
+            </label>
+
+            <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <input
+                type="radio"
+                checked={pagamento === "dinheiro"}
+                onChange={() => setPagamento("dinheiro")}
+              />
+              Dinheiro
+            </label>
+
+            <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <input
+                type="radio"
+                checked={pagamento === "cartao_templo"}
+                onChange={() => setPagamento("cartao_templo")}
+              />
+              Cartão (direto no templo)
+            </label>
+          </div>
+        </div>
+
+        <div style={styles.card}>
+          <div style={styles.totalBox}>
+            <span>Total</span>
+            <span>{moneyBRL(total)}</span>
+          </div>
+
+          <div style={{ height: 12 }} />
+
+          <button
+            style={{
+              ...styles.btn,
+              ...(enviando ? styles.btnGhost : styles.btnPrimary),
+              width: "100%",
+              padding: "14px 14px",
+              fontSize: 16,
+            }}
+            onClick={enviar}
+            disabled={enviando}
+            type="button"
+          >
+            {enviando ? "Enviando para a planilha..." : "Finalizar Inscrição"}
+          </button>
+
+          <div style={styles.small}>
+            Endpoint: <b>{ENDPOINT}</b>
+          </div>
+
+          {debugResposta && (
+            <div style={{ ...styles.small, marginTop: 10 }}>
+              Última resposta do servidor: {debugResposta}
+            </div>
+          )}
+        </div>
       </div>
-
-      <div className="text-2xl font-bold bg-blue-600 text-white p-4 rounded-xl flex justify-between">
-        <span>Total:</span>
-        <span>R$ {total}</span>
-      </div>
-
-      <button
-        onClick={enviar}
-        disabled={enviando}
-        className={`w-full py-4 rounded-xl text-white font-bold text-lg ${
-          enviando ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-        }`}
-        type="button"
-      >
-        {enviando ? "SALVANDO NA PLANILHA..." : "FINALIZAR INSCRIÇÃO"}
-      </button>
-
-      <p className="text-xs text-gray-500 break-all">
-        Endpoint em uso: {ENDPOINT}
-      </p>
     </div>
   );
 }
