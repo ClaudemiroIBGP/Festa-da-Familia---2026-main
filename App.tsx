@@ -7,8 +7,8 @@ type Participant = {
   valor: number;
 };
 
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbwAhhjD2VQ8ZcxSC6sedW8JTMuynzttOtRHT6JTZjAdu5QQRp-B5_t0DXUoI7Jnyjg/exec";
-
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbw2s6VUA9XenYKYZNsCvMlov9VJIoS1YmeXOV4pVfxZ3-CfyY2hJ9xB_y-NmYaP4Qts/exec";
+                  
 export default function App() {
   const [participantes, setParticipantes] = useState<Participant[]>([
     { nome: "", telefone: "", tipo: "adulto", valor: 100 },
@@ -58,29 +58,15 @@ export default function App() {
       participantes,
     };
 
-    try {
-      const res = await fetch(ENDPOINT, {
+    try {await fetch(ENDPOINT, {
   method: "POST",
-  headers: { "Content-Type": "application/json; charset=utf-8" },
   body: JSON.stringify({
     action: "criar_inscricao",
     data: payload,
   }),
-});
+}); }
 
-const txt = await res.text(); // apps script às vezes é mais confiável ler como texto
-if (!res.ok) {
-  throw new Error(`HTTP ${res.status}: ${txt}`);
-}
-
-let out: any = {};
-try { out = JSON.parse(txt); } catch {}
-if (!out.ok) {
-  throw new Error(out.error || `Resposta inesperada: ${txt}`);
-}
-
-setSucesso(true);
-} catch (err) {
+ catch (err) {
       alert("Erro ao enviar. Verifique a conexão.");
     } finally {
       setEnviando(false);
