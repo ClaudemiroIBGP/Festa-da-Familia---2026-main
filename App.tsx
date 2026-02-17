@@ -12,7 +12,7 @@ type Participant = {
 type PaymentType = "pix" | "dinheiro" | "cartao_templo";
 
 const ENDPOINT =
-  "COLE_AQUI_SUA_URL_EXEC"; // ex.: https://script.google.com/macros/s/XXXX/exec
+  "https://script.google.com/macros/s/AKfycbyZR3lOKrO6uYG4fln6n7TOwr2NOl8hbUl9hGvOc7NM02W-G1pMUpwdOeLhs9Eo8k5N/exec"; // ex.: https://script.google.com/macros/s/XXXX/exec
 
 function onlyDigits(v: string) {
   return (v || "").replace(/\D/g, "");
