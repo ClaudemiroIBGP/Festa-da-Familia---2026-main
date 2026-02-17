@@ -14,7 +14,7 @@ type Payment = "PIX" | "DINHEIRO" | "CARTAO_Templo";
 // ✅ Se você não estiver usando .env COMMITADO no GitHub Pages,
 // deixe o endpoint aqui (URL NOVA /exec).
 const FALLBACK_ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbw2s6VUA9XenYKYZNsCvMlov9VJIoS1YmeXOV4pVfxZ3-CfyY2hJ9xB_y-NmYaP4Qts/exec";
+  "https://script.google.com/macros/s/AKfycbzseS5udGt-BeLQVC181ZcujcxcaOufOLZov0-_xvip9vvnwmGuO0SCJAvktaQyP0ag/exec";
 
 
   
@@ -92,69 +92,62 @@ export default function App() {
   }
 
   async function enviar() {
-    setErro(null);
+  setErro(null);
+  setSucesso(false);
 
-    const msg = validar();
-    if (msg) {
-      setErro(msg);
-      return;
-    }
-
-    setEnviando(true);
-
-    // ✅ payload no formato que seu Apps Script espera: { action, data }
-    // Incluo também "responsavel" por compatibilidade com sua planilha.
-    const responsavel = participantes[0];
-    const payload = {
-      pagamento,
-      total,
-      responsavel: responsavel.nome,
-      telefoneResponsavel: responsavel.telefone,
-      participantes,
-    };
-
-    try {
-      const res = await fetch(ENDPOINT, {
-        method: "POST",
-        // ✅ SEM headers para evitar preflight/CORS chatos no Apps Script
-        body: JSON.stringify({
-          action: "criar_inscricao",
-          data: payload,
-        }),
-        // Opcional: ajuda quando o usuário fecha a aba rápido
-        keepalive: true,
-        redirect: "follow",
-      });
-
-      // Apps Script às vezes retorna 302/200 sem JSON “certinho”.
-      // Ler como texto é mais robusto.
-      const txt = await res.text().catch(() => "");
-
-      // Se o Apps Script estiver retornando JSON, tentamos interpretar.
-      let out: any = null;
-      try {
-        out = txt ? JSON.parse(txt) : null;
-      } catch {
-        out = null;
-      }
-
-      // Se houver um erro explícito do script
-      if (out && out.ok === false) {
-        throw new Error(out.error || "Falha ao salvar na planilha.");
-      }
-
-      // Mesmo se não der pra ler resposta (ou vier vazio),
-      // consideramos sucesso se o fetch não lançou erro de rede.
-      setSucesso(true);
-    } catch (e: any) {
-      setErro(
-        e?.message ||
-          "Erro ao enviar. Verifique sua internet e a implantação do Apps Script."
-      );
-    } finally {
-      setEnviando(false);
-    }
+  const msg = validar();
+  if (msg) {
+    setErro(msg);
+    return;
   }
+
+  setEnviando(true);
+
+  const responsavel = participantes[0];
+  const payload = {
+    pagamento,
+    total,
+    responsavel: responsavel.nome,
+    telefoneResponsavel: responsavel.telefone,
+    participantes,
+  };
+
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "criar_inscricao",
+        data: payload,
+      }),
+      redirect: "follow",
+    });
+
+    const txt = await res.text(); // Apps Script costuma ser mais estável assim
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${txt || "Sem resposta do servidor"}`);
+    }
+
+    // Exigimos retorno JSON { ok: true }
+    let out: any = null;
+    try {
+      out = txt ? JSON.parse(txt) : null;
+    } catch {
+      throw new Error(`Resposta não-JSON do Web App: ${txt || "(vazio)"}`);
+    }
+
+    if (!out || out.ok !== true) {
+      throw new Error(out?.error || `Web App não confirmou ok: ${txt}`);
+    }
+
+    setSucesso(true);
+  } catch (e: any) {
+    setErro(e?.message || "Falha ao enviar para a planilha.");
+  } finally {
+    setEnviando(false);
+  }
+}
+
 
   if (sucesso) {
     return (
