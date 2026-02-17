@@ -11,8 +11,8 @@ type Participant = {
 
 type PaymentType = "pix" | "dinheiro" | "cartao_templo";
 
-const ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbyZR3lOKrO6uYG4fln6n7TOwr2NOl8hbUl9hGvOc7NM02W-G1pMUpwdOeLhs9Eo8k5N/exec"; // ex.: https://script.google.com/macros/s/XXXX/exec
+// ✅ ENDPOINT CORRIGIDO - ESTA É A CORREÇÃO PRINCIPAL!
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbxVTY69q9dNVA0WmxQWmbPTr4tgpmhCP7rGe4VldLLMHjQOdtlOJWf9vq_Uv57OHs3I/exec";
 
 function onlyDigits(v: string) {
   return (v || "").replace(/\D/g, "");
@@ -24,15 +24,15 @@ function moneyBRL(v: number) {
 }
 
 export default function App() {
-  const [participantes, setParticipantes] = useState<Participant[]>([
+  const [participantes, setParticipantes] = useState([
     { nome: "", telefone: "", tipo: "adulto", valor: 100 },
   ]);
 
-  const [pagamento, setPagamento] = useState<PaymentType>("pix");
+  const [pagamento, setPagamento] = useState("pix");
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
-  const [erro, setErro] = useState<string | null>(null);
-  const [debugResposta, setDebugResposta] = useState<string>("");
+  const [erro, setErro] = useState(null);
+  const [debugResposta, setDebugResposta] = useState("");
 
   const total = useMemo(() => {
     return participantes.reduce((acc, p) => acc + (Number(p.valor) || 0), 0);
@@ -77,8 +77,8 @@ export default function App() {
   }
 
   function validar(): string | null {
-    if (!ENDPOINT || ENDPOINT.includes("COLE_AQUI")) {
-      return "Você não configurou o ENDPOINT. Cole a URL /exec do Web App do Apps Script no App.tsx.";
+    if (!ENDPOINT || ENDPOINT.includes("COLE_AQUI") || ENDPOINT.includes("Error") || ENDPOINT.includes("knowledge base")) {
+      return "ENDPOINT não configurado corretamente. Verifique o código.";
     }
 
     const resp = participantes[0];
@@ -95,12 +95,17 @@ export default function App() {
   }
 
   async function enviar() {
+    // 🔍 LOGS DE DEBUG ADICIONADOS
+    console.log('🔍 INICIANDO DEBUG');
+    console.log('🔍 ENDPOINT atual:', ENDPOINT);
+    
     setErro(null);
     setDebugResposta("");
     setSucesso(false);
 
     const msg = validar();
     if (msg) {
+      console.log('❌ Erro de validação:', msg);
       setErro(msg);
       return;
     }
@@ -113,7 +118,19 @@ export default function App() {
       participantes,
     };
 
+    // 🔍 LOGS DETALHADOS
+    console.log('=== DEBUG COMPLETO ===');
+    console.log('📍 ENDPOINT:', ENDPOINT);
+    console.log('📦 Payload original:', payload);
+    console.log('📦 Participantes:', participantes);
+    console.log('💰 Total:', total);
+    console.log('💳 Pagamento:', pagamento);
+    console.log('📤 JSON que será enviado:', JSON.stringify({ data: payload }));
+    console.log('=====================');
+
     try {
+      console.log('🚀 Enviando requisição...');
+      
       // IMPORTANTE: sem headers para evitar preflight/CORS chato com Apps Script
       const res = await fetch(ENDPOINT, {
         method: "POST",
@@ -121,7 +138,13 @@ export default function App() {
         body: JSON.stringify({ data: payload }),
       });
 
+      console.log('📥 Resposta recebida:', res);
+      console.log('📊 Status:', res.status);
+      console.log('✅ OK?', res.ok);
+
       const txt = await res.text();
+      console.log('📄 Texto da resposta:', txt);
+      
       setDebugResposta(txt);
 
       if (!res.ok) {
@@ -131,6 +154,7 @@ export default function App() {
       let out: any;
       try {
         out = txt ? JSON.parse(txt) : null;
+        console.log('🔄 JSON parseado:', out);
       } catch {
         throw new Error(`Resposta do Apps Script não é JSON: ${txt || "(vazia)"}`);
       }
@@ -139,8 +163,10 @@ export default function App() {
         throw new Error(out?.error || `Apps Script não confirmou ok:true. Resposta: ${txt}`);
       }
 
+      console.log('✅ SUCESSO TOTAL!');
       setSucesso(true);
     } catch (e: any) {
+      console.log('❌ ERRO CAPTURADO:', e);
       setErro(e?.message || "Falha ao enviar para a planilha.");
     } finally {
       setEnviando(false);
@@ -252,7 +278,7 @@ export default function App() {
       padding: 12,
       fontWeight: 700,
       marginBottom: 14,
-      whiteSpace: "pre-wrap",
+      whiteSpace: "pre-wrap" as const,
     },
     ok: {
       background: "#ecfdf5",
@@ -287,31 +313,31 @@ export default function App() {
         <div style={styles.container}>
           <div style={styles.card}>
             <div style={styles.ok}>
-              <div style={{ fontSize: 26, fontWeight: 900 }}>
+              <div style={{ fontSize: 24, marginBottom: 8 }}>
                 Inscrição Confirmada! ✅
               </div>
-              <div style={{ marginTop: 8, color: "#047857", fontWeight: 700 }}>
+              <div style={{ fontSize: 16 }}>
                 Seus dados foram gravados na planilha.
               </div>
-
-              <button
-                style={{ ...styles.btn, ...styles.btnPrimary, marginTop: 16 }}
-                onClick={resetForm}
-              >
-                Fazer nova inscrição
-              </button>
-
-              <div style={styles.small}>
-                Endpoint em uso: <b>{ENDPOINT}</b>
-              </div>
-
-              {/* Debug opcional */}
-              {debugResposta && (
-                <div style={{ ...styles.small, marginTop: 12 }}>
-                  Resposta do servidor: {debugResposta}
-                </div>
-              )}
             </div>
+
+            <button
+              style={{ ...styles.btn, ...styles.btnPrimary, width: "100%", marginTop: 16 }}
+              onClick={resetForm}
+            >
+              Fazer nova inscrição
+            </button>
+
+            <div style={styles.small}>
+              Endpoint em uso: {ENDPOINT}
+            </div>
+
+            {/* Debug opcional */}
+            {debugResposta && (
+              <div style={styles.small}>
+                Resposta do servidor: {debugResposta}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -322,36 +348,29 @@ export default function App() {
     <div style={styles.page}>
       <div style={styles.container}>
         <div style={styles.header}>
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: "50%",
-              background: "#e0f2fe",
-              display: "grid",
-              placeItems: "center",
-              fontWeight: 900,
-              color: "#0369a1",
-            }}
-          >
+          <div style={{ fontSize: 32 }}>
             ♥
           </div>
           <div>
-            <div style={styles.brand}>IBGP</div>
-            <div style={styles.subtitle}>VI Festa da Família</div>
+            <div style={styles.brand}>
+              IBGP
+            </div>
+            <div style={styles.subtitle}>
+              VI Festa da Família
+            </div>
           </div>
         </div>
 
         {erro && <div style={styles.error}>{erro}</div>}
 
         <div style={styles.card}>
-          <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
-            <div style={{ fontWeight: 900, fontSize: 18 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+            <h3 style={{ margin: 0 }}>
               Participantes
-            </div>
+            </h3>
 
             <button
-              style={{ ...styles.btn, ...styles.btnGreen }}
+              style={{ ...styles.btn, ...styles.btnGhost }}
               onClick={addParticipante}
               type="button"
             >
@@ -359,17 +378,17 @@ export default function App() {
             </button>
           </div>
 
-          <div style={{ marginTop: 10, color: "#6b7280", fontSize: 13 }}>
-            O <b>1º participante</b> será tratado como <b>responsável</b> (nome e telefone obrigatórios).
+          <div style={styles.small}>
+            O 1º participante será tratado como responsável (nome e telefone obrigatórios).
           </div>
         </div>
 
         {participantes.map((p, i) => (
-          <div style={styles.card} key={i}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ fontWeight: 900 }}>
+          <div key={i} style={styles.card}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h4 style={{ margin: 0 }}>
                 {i === 0 ? "Responsável" : `Participante #${i + 1}`}
-              </div>
+              </h4>
 
               {participantes.length > 1 && (
                 <button
@@ -382,11 +401,11 @@ export default function App() {
               )}
             </div>
 
-            <div style={{ height: 10 }} />
-
             <div style={styles.row}>
               <div>
-                <label style={styles.label}>Nome</label>
+                <label style={styles.label}>
+                  Nome
+                </label>
                 <input
                   style={styles.input}
                   value={p.nome}
@@ -396,7 +415,9 @@ export default function App() {
               </div>
 
               <div>
-                <label style={styles.label}>Telefone (apenas números)</label>
+                <label style={styles.label}>
+                  Telefone (apenas números)
+                </label>
                 <input
                   style={styles.input}
                   value={p.telefone}
@@ -406,7 +427,9 @@ export default function App() {
               </div>
 
               <div>
-                <label style={styles.label}>Tipo</label>
+                <label style={styles.label}>
+                  Tipo
+                </label>
                 <select
                   style={styles.select}
                   value={p.tipo}
@@ -418,10 +441,13 @@ export default function App() {
               </div>
 
               <div>
-                <label style={styles.label}>Valor</label>
+                <label style={styles.label}>
+                  Valor
+                </label>
                 <input
                   style={styles.input}
-                  value={String(p.valor)}
+                  type="number"
+                  value={p.valor}
                   onChange={(e) => updateParticipante(i, "valor", e.target.value)}
                   inputMode="numeric"
                 />
@@ -431,12 +457,12 @@ export default function App() {
         ))}
 
         <div style={styles.card}>
-          <div style={{ fontWeight: 900, fontSize: 18, marginBottom: 10 }}>
+          <h3 style={{ margin: "0 0 16px 0" }}>
             Forma de Pagamento
-          </div>
+          </h3>
 
-          <div style={{ display: "grid", gap: 10 }}>
-            <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input
                 type="radio"
                 checked={pagamento === "pix"}
@@ -445,7 +471,7 @@ export default function App() {
               PIX
             </label>
 
-            <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input
                 type="radio"
                 checked={pagamento === "dinheiro"}
@@ -454,7 +480,7 @@ export default function App() {
               Dinheiro
             </label>
 
-            <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input
                 type="radio"
                 checked={pagamento === "cartao_templo"}
@@ -471,29 +497,26 @@ export default function App() {
             <span>{moneyBRL(total)}</span>
           </div>
 
-          <div style={{ height: 12 }} />
-
           <button
             style={{
               ...styles.btn,
-              ...(enviando ? styles.btnGhost : styles.btnPrimary),
+              ...styles.btnGreen,
               width: "100%",
-              padding: "14px 14px",
+              marginTop: 16,
               fontSize: 16,
             }}
             onClick={enviar}
             disabled={enviando}
-            type="button"
           >
             {enviando ? "Enviando para a planilha..." : "Finalizar Inscrição"}
           </button>
 
           <div style={styles.small}>
-            Endpoint: <b>{ENDPOINT}</b>
+            Endpoint: {ENDPOINT}
           </div>
 
           {debugResposta && (
-            <div style={{ ...styles.small, marginTop: 10 }}>
+            <div style={styles.small}>
               Última resposta do servidor: {debugResposta}
             </div>
           )}
