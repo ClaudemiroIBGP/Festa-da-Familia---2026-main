@@ -12,7 +12,7 @@ type Participant = {
 type PaymentType = "pix" | "dinheiro" | "cartao_templo";
 
 // ✅ ENDPOINT CORRIGIDO - ESTA É A CORREÇÃO PRINCIPAL!
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbxVTY69q9dNVA0WmxQWmbPTr4tgpmhCP7rGe4VldLLMHjQOdtlOJWf9vq_Uv57OHs3I/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbwZImn5Rtu4MYie0-YCcU_NF7_8re_OirKck2z2uYgwefqNfkOuiYBcIE5Q795e_ila/exec";
 
 function onlyDigits(v: string) {
   return (v || "").replace(/\D/g, "");
