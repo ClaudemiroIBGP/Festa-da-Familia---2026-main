@@ -134,10 +134,12 @@ export default function App() {
       
       // IMPORTANTE: sem headers para evitar preflight/CORS chato com Apps Script
       const res = await fetch(ENDPOINT, {
-        method: "POST",
-        redirect: "follow",
-        body: JSON.stringify({ data: payload }),
-      });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ data: payload }),
+});
 
       console.log('📥 Resposta recebida:', res);
       console.log('📊 Status:', res.status);
