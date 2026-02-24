@@ -121,6 +121,7 @@ export default function App() {
     // 🔍 LOGS DETALHADOS
     console.log('=== DEBUG COMPLETO ===');
     console.log('📍 ENDPOINT:', ENDPOINT);
+    console.log("VERSAO NOVA 999");
     console.log('📦 Payload original:', payload);
     console.log('📦 Participantes:', participantes);
     console.log('💰 Total:', total);
