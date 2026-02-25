@@ -17,7 +17,7 @@ interface Participant {
 
 // ✅ ENDPOINT ATUALIZADO
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbyVhbFrBNBH_cRodY4uXjL0hjSKHj2pEJUDmUMfevTAslfp79rJQlEMY-Dz5fRWqPJ1/exec";
-
+                  
 export default function App() {
   const [participantes, setParticipantes] = useState<Participant[]>([
     { nome: "", telefone: "", tipo: "adulto", valor: 100 },
@@ -287,8 +287,8 @@ export default function App() {
           </div>
         </form>
 
-        <p className="text-center text-neutral-400 text-[10px] mt-8 uppercase tracking-[0.2em] font-bold">
-          IBGP &copy; 2026 • v2.0 • Todos os direitos reservados
+        <p className="text-center text-rose-500 text-[10px] mt-8 uppercase tracking-[0.2em] font-black">
+          IBGP &copy; 2026 • v2.1 - TESTE DE ENVIO • Todos os direitos reservados
         </p>
       </div>
     </div>
