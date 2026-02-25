@@ -90,23 +90,21 @@ export default function App() {
     try {
       console.log('📡 Enviando para o Google...', payload);
       
-      /**
-       * ✅ SOLUÇÃO PARA CORS:
-       * Usamos 'text/plain' e 'no-cors'. 
-       * O Google Apps Script recebe o JSON no corpo da requisição.
-       */
+      // ✅ MÉTODO MAIS COMPATÍVEL: URLSearchParams
+      const params = new URLSearchParams();
+      params.append('payload', JSON.stringify(payload));
+
       await fetch(ENDPOINT, {
         method: "POST",
         mode: "no-cors", 
         headers: {
-          "Content-Type": "text/plain",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(payload),
+        body: params.toString(),
       });
 
-      // Em modo 'no-cors' não podemos ler a resposta, 
-      // mas se não houver erro de rede, assumimos que a requisição foi disparada com sucesso.
       console.log('✅ Requisição enviada!');
+      alert("DADOS ENVIADOS! Verifique a planilha agora.");
       setSucesso(true);
     } catch (err: any) {
       setErro("Erro ao conectar com o servidor. Verifique sua internet.");
@@ -290,7 +288,7 @@ export default function App() {
         </form>
 
         <p className="text-center text-neutral-400 text-[10px] mt-8 uppercase tracking-[0.2em] font-bold">
-          IBGP &copy; 2026 • Todos os direitos reservados
+          IBGP &copy; 2026 • v2.0 • Todos os direitos reservados
         </p>
       </div>
     </div>
