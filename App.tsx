@@ -16,7 +16,7 @@ interface Participant {
 }
 
 // ✅ ENDPOINT ATUALIZADO
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbyVhbFrBNBH_cRodY4uXjL0hjSKHj2pEJUDmUMfevTAslfp79rJQlEMY-Dz5fRWqPJ1/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbw3GVjyhH3x20bJYc73ierg4sot8wzjg_QP2q-QhBYX1Iz92UuHVx0rwQK-vXalc3a9/exec";
 
 export default function App() {
   const [participantes, setParticipantes] = useState<Participant[]>([
@@ -105,7 +105,7 @@ export default function App() {
       });
 
       // Em modo 'no-cors' não podemos ler a resposta, 
-      // mas se não cair no catch, a requisição foi disparada com sucesso.
+      // mas se não houver erro de rede, assumimos que a requisição foi disparada com sucesso.
       console.log('✅ Requisição enviada!');
       setSucesso(true);
     } catch (err: any) {
@@ -296,3 +296,5 @@ export default function App() {
     </div>
   );
 }
+
+
