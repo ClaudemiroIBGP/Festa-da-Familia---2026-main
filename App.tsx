@@ -15,7 +15,7 @@ interface Participant {
 }
 
 // ✅ ENDPOINT DO GOOGLE (MANTIDO)
-const ENDPOINT = "https://script.google.com/macros/library/d/1XVB_nZvWwtXj5ui7rSdBDrDrQiziZ2vLclvXlNtNHjffIPzORXnU-DtF/44";
+const ENDPOINT = "https://script.google.com/macros/library/d/1XVB_nZvWwtXj5ui7rSdBDrDrQiziZ2vLclvXlNtNHjffIPzORXnU-DtF/45";
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
