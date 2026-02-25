@@ -15,8 +15,8 @@ interface Participant {
   valor: number;
 }
 
-// ✅ ENDPOINT DO GOOGLE APPS SCRIPT
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbw3GVjyhH3x20bJYc73ierg4sot8wzjg_QP2q-QhBYX1Iz92UuHVx0rwQK-vXalc3a9/exec";
+// ✅ ENDPOINT ATUALIZADO
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbyVhbFrBNBH_cRodY4uXjL0hjSKHj2pEJUDmUMfevTAslfp79rJQlEMY-Dz5fRWqPJ1/exec";
 
 export default function App() {
   const [participantes, setParticipantes] = useState<Participant[]>([
@@ -64,6 +64,7 @@ export default function App() {
   const validate = () => {
     if (!participantes[0].nome.trim()) return "O nome do responsável é obrigatório.";
     if (!participantes[0].telefone.trim()) return "O telefone do responsável é obrigatório.";
+    if (participantes.some(p => !p.nome.trim())) return "Preencha o nome de todos os participantes.";
     return null;
   };
 
@@ -87,30 +88,29 @@ export default function App() {
     };
 
     try {
+      console.log('📡 Enviando para o Google...', payload);
+      
       /**
-       * ✅ DICA DE OURO PARA GOOGLE APPS SCRIPT:
-       * Para evitar erros de CORS (preflight OPTIONS), enviamos como 'text/plain' 
-       * ou usamos URLSearchParams para 'application/x-www-form-urlencoded'.
-       * O Apps Script recebe isso no e.postData.contents.
+       * ✅ SOLUÇÃO PARA CORS:
+       * Usamos 'text/plain' e 'no-cors'. 
+       * O Google Apps Script recebe o JSON no corpo da requisição.
        */
-      const formData = new URLSearchParams();
-      formData.append("payload", JSON.stringify(payload));
-
-      const response = await fetch(ENDPOINT, {
+      await fetch(ENDPOINT, {
         method: "POST",
-        mode: "no-cors", // 'no-cors' é seguro para Apps Script se você não precisar ler a resposta JSON detalhada
+        mode: "no-cors", 
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "text/plain",
         },
-        body: formData.toString(),
+        body: JSON.stringify(payload),
       });
 
-      // Como usamos 'no-cors', não conseguimos ler o corpo da resposta (fica opaco),
-      // mas se não houver erro de rede, assumimos que o Apps Script recebeu.
+      // Em modo 'no-cors' não podemos ler a resposta, 
+      // mas se não cair no catch, a requisição foi disparada com sucesso.
+      console.log('✅ Requisição enviada!');
       setSucesso(true);
     } catch (err: any) {
       setErro("Erro ao conectar com o servidor. Verifique sua internet.");
-      console.error(err);
+      console.error('❌ Erro no fetch:', err);
     } finally {
       setEnviando(false);
     }
@@ -125,7 +125,7 @@ export default function App() {
           </div>
           <h2 className="text-3xl font-bold text-neutral-900 mb-2">Inscrição Enviada!</h2>
           <p className="text-neutral-500 mb-8">
-            Seus dados foram registrados com sucesso na nossa planilha. Nos vemos na Festa da Família!
+            Seus dados foram registrados. Verifique sua planilha em alguns instantes.
           </p>
           <button
             onClick={() => window.location.reload()}
@@ -198,7 +198,7 @@ export default function App() {
                       type="text"
                       value={p.nome}
                       onChange={(e) => updateParticipante(index, "nome", e.target.value)}
-                      placeholder="Ex: João Silva"
+                      placeholder="Nome completo"
                       className="w-full bg-neutral-50 border-none rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-500/20 outline-none transition-all"
                       required
                     />
@@ -211,7 +211,7 @@ export default function App() {
                       type="tel"
                       value={p.telefone}
                       onChange={(e) => updateParticipante(index, "telefone", e.target.value)}
-                      placeholder="(00) 00000-0000"
+                      placeholder="(61) 99999-9999"
                       className="w-full bg-neutral-50 border-none rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-500/20 outline-none transition-all"
                       required={index === 0}
                     />
@@ -296,4 +296,3 @@ export default function App() {
     </div>
   );
 }
-
