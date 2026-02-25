@@ -312,7 +312,7 @@ export default function App() {
               <div className="bg-white rounded-xl p-6 shadow-md mt-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Forma de Pagamento</h3>
                 <div className="space-y-3">
-                  {["pix", "dinheiro", "card_templo"].map((method) => (
+                  {["pix", "dinheiro", "cartão_templo"].map((method) => (
                     <label key={method} className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${pagamento === method ? "bg-blue-50 border-blue-500" : "hover:bg-gray-50"}`}>
                       <input type="radio" name="payment" value={method} checked={pagamento === method} onChange={() => setPagamento(method)} className="w-5 h-5 text-blue-600" />
                       <span className="ml-3 text-sm font-medium text-gray-700 capitalize">{method.replace("_", " ")}</span>
