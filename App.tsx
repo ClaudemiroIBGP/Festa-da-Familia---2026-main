@@ -3,11 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useMemo, useState } from "react";
 import { Heart, Plus, Trash2, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
