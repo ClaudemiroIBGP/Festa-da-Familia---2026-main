@@ -21,7 +21,7 @@ interface Participant {
 }
 
 // ✅ ENDPOINT DO GOOGLE APPS SCRIPT
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbwZImn5Rtu4MYie0-YCcU_NF7_8re_OirKck2z2uYgwefqNfkOuiYBcIE5Q795e_ila/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbw3GVjyhH3x20bJYc73ierg4sot8wzjg_QP2q-QhBYX1Iz92UuHVx0rwQK-vXalc3a9/exec";
 
 export default function App() {
   const [participantes, setParticipantes] = useState<Participant[]>([
