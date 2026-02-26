@@ -142,14 +142,11 @@ export default function App() {
     };
 
     try {
-      const params = new URLSearchParams();
-      params.append('payload', JSON.stringify(payload));
-
       await fetch(ENDPOINT, {
         method: "POST",
         mode: "no-cors", 
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params.toString(),
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload),
       });
 
       setSucesso(true);
