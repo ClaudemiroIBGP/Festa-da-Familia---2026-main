@@ -30,6 +30,7 @@ export default function App() {
   const [sucesso, setSucesso] = useState(false);
   const [showPixModal, setShowPixModal] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   // Refs para scroll
   const aboutRef = useRef<HTMLElement>(null);
@@ -145,6 +146,31 @@ export default function App() {
       next[index] = p;
       return next;
     });
+  };
+
+  const handleBlur = (index: number, field: string) => {
+    setTouched(prev => ({ ...prev, [`${index}_${field}`]: true }));
+  };
+
+  const getFieldError = (index: number, field: keyof Participant) => {
+    const isTouched = touched[`${index}_${field}`];
+    if (!isTouched) return null;
+
+    const p = participantes[index];
+    if (field === "nome" && !p.nome.trim()) return "Nome é obrigatório";
+    
+    if (index === 0) {
+      if (field === "cpf") {
+        if (!p.cpf) return "CPF é obrigatório";
+        if (!validateCPF(p.cpf)) return "CPF inválido";
+      }
+      if (field === "telefone") {
+        if (!p.telefone) return "Telefone é obrigatório";
+        const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
+        if (!phoneRegex.test(p.telefone)) return "Formato: (XX) XXXXX-XXXX";
+      }
+    }
+    return null;
   };
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -402,7 +428,15 @@ export default function App() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
-                      <input type="text" value={p.nome} onChange={(e) => updateParticipante(index, "nome", e.target.value)} required className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                      <input 
+                        type="text" 
+                        value={p.nome} 
+                        onChange={(e) => updateParticipante(index, "nome", e.target.value)} 
+                        onBlur={() => handleBlur(index, "nome")}
+                        required 
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 outline-none transition-all ${getFieldError(index, "nome") ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-500"}`} 
+                      />
+                      {getFieldError(index, "nome") && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={12} /> {getFieldError(index, "nome")}</p>}
                     </div>
                     {index === 0 && (
                       <div>
@@ -411,10 +445,12 @@ export default function App() {
                           type="text" 
                           value={p.cpf} 
                           onChange={(e) => updateParticipante(index, "cpf", e.target.value)} 
+                          onBlur={() => handleBlur(index, "cpf")}
                           required 
                           placeholder="000.000.000-00"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+                          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 outline-none transition-all ${getFieldError(index, "cpf") ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-500"}`} 
                         />
+                        {getFieldError(index, "cpf") && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={12} /> {getFieldError(index, "cpf")}</p>}
                       </div>
                     )}
                     <div>
@@ -429,7 +465,16 @@ export default function App() {
                   {index === 0 && (
                     <div className="mt-4">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Telefone de Contato *</label>
-                      <input type="tel" value={p.telefone} onChange={(e) => updateParticipante(index, "telefone", e.target.value)} required placeholder="(61) 99999-9999" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                      <input 
+                        type="tel" 
+                        value={p.telefone} 
+                        onChange={(e) => updateParticipante(index, "telefone", e.target.value)} 
+                        onBlur={() => handleBlur(index, "telefone")}
+                        required 
+                        placeholder="(61) 99999-9999" 
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 outline-none transition-all ${getFieldError(index, "telefone") ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-blue-500"}`} 
+                      />
+                      {getFieldError(index, "telefone") && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={12} /> {getFieldError(index, "telefone")}</p>}
                     </div>
                   )}
                 </div>
