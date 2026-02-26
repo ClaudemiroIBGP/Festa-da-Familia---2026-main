@@ -29,6 +29,7 @@ export default function App() {
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [showPixModal, setShowPixModal] = useState(false);
+  const [showPixChoice, setShowPixChoice] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
@@ -177,22 +178,33 @@ export default function App() {
     if (e) e.preventDefault();
     setErro(null);
 
-    // Validação de Telefone
-    const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
-    if (!phoneRegex.test(participantes[0].telefone)) {
-      setErro("Por favor, insira um telefone válido no formato (XX) XXXXX-XXXX");
+    // Marcar todos como touched para mostrar erros
+    const allTouched: Record<string, boolean> = {};
+    participantes.forEach((_, i) => {
+      allTouched[`${i}_nome`] = true;
+      if (i === 0) {
+        allTouched[`0_cpf`] = true;
+        allTouched[`0_telefone`] = true;
+      }
+    });
+    setTouched(allTouched);
+
+    // Validação Geral
+    let hasError = false;
+    participantes.forEach((_, i) => {
+      if (getFieldError(i, "nome") || (i === 0 && (getFieldError(0, "cpf") || getFieldError(0, "telefone")))) {
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      setErro("Por favor, corrija os campos marcados em vermelho.");
       return;
     }
 
-    // Validação de CPF (apenas para o responsável)
-    const cpfValue = participantes[0].cpf || "";
-    if (!validateCPF(cpfValue)) {
-      setErro("Por favor, insira um CPF válido.");
-      return;
-    }
-
-    if (pagamento === "pix" && !showPixModal) {
-      setShowPixModal(true);
+    // Fluxo específico para PIX
+    if (pagamento === "pix" && !showPixModal && !showPixChoice && !sucesso) {
+      setShowPixChoice(true);
       return;
     }
 
@@ -237,7 +249,42 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 font-sans">
-      {/* Modal PIX */}
+      {/* Modal Escolha PIX */}
+      {showPixChoice && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl text-center">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">Como deseja pagar?</h2>
+            <div className="flex flex-col gap-4">
+              <button 
+                onClick={() => {
+                  setShowPixChoice(false);
+                  setShowPixModal(true);
+                }} 
+                className="w-full py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors shadow-md flex items-center justify-center gap-2"
+              >
+                Pagar Agora
+              </button>
+              <button 
+                onClick={() => {
+                  setShowPixChoice(false);
+                  handleSubmit();
+                }} 
+                className="w-full py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-colors border border-gray-200"
+              >
+                Pagar Depois
+              </button>
+              <button 
+                onClick={() => setShowPixChoice(false)} 
+                className="mt-2 text-sm text-gray-500 hover:underline"
+              >
+                Voltar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal PIX QR Code */}
       {showPixModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl text-center">
@@ -513,7 +560,7 @@ export default function App() {
                   <p className="text-blue-700 text-2xl font-bold">R$ {total.toFixed(2)}</p>
                 </div>
                 <button type="submit" disabled={enviando} className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-green-700 transition-all flex items-center justify-center gap-3">
-                  {enviando ? <Loader2 className="animate-spin" /> : "Finalizar Inscrição"}
+                  {enviando ? <Loader2 className="animate-spin" /> : "Enviar Inscrição"}
                 </button>
               </div>
             </form>
