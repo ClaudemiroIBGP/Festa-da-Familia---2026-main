@@ -70,6 +70,12 @@ export default function App() {
     e.preventDefault();
     setErro(null);
 
+      // Validação de Telefone
+    const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
+    if (!phoneRegex.test(participantes[0].telefone)) {
+      setErro("Por favor, insira um telefone válido no formato (XX) XXXXX-XXXX");
+      return;
+    }
     if (pagamento === "pix" && !showPixModal) {
       setShowPixModal(true);
       return;
