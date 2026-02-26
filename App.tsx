@@ -58,17 +58,31 @@ export default function App() {
     setParticipantes((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const maskPhone = (value: string) => {
+ const maskPhone = (value: string) => {
     if (!value) return "";
     value = value.replace(/\D/g, "");
     value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
     value = value.replace(/(\d)(\d{4})$/, "$1-$2");
     return value.substring(0, 15);
   };
+
   const updateParticipante = (index: number, field: keyof Participant, value: any) => {
     setParticipantes((prev) => {
       const next = [...prev];
-      next[index] = { ...next[index], [field]: value };
+      const p = { ...next[index] };
+
+      if (field === "telefone") {
+        p.telefone = maskPhone(value);
+      } else if (field === "tipo") {
+        p.tipo = value as ParticipantType;
+        if (value === "adulto") p.valor = 100;
+        else if (value === "crianca") p.valor = 50;
+        else p.valor = 0;
+      } else {
+        (p as any)[field] = value;
+      }
+
+      next[index] = p;
       return next;
     });
   };
