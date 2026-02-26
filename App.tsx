@@ -18,7 +18,7 @@ interface Participant {
 
 // ✅ ENDPOINT DO GOOGLE (MANTIDO)
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbyVhbFrBNBH_cRodY4uXjL0hjSKHj2pEJUDmUMfevTAslfp79rJQlEMY-Dz5fRWqPJ1/exec";
-                  
+
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
   const [participantes, setParticipantes] = useState<Participant[]>([
@@ -30,8 +30,6 @@ export default function App() {
   const [sucesso, setSucesso] = useState(false);
   const [showPixModal, setShowPixModal] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
-  const [ignorarDuplicado, setIgnorarDuplicado] = useState(false);
-  const [showDuplicateAlert, setShowDuplicateAlert] = useState(false);
 
   // Refs para scroll
   const aboutRef = useRef<HTMLElement>(null);
@@ -124,18 +122,16 @@ export default function App() {
     setEnviando(true);
 
     // Verificação de CPF Duplicado (Chamada ao Google Script)
-    if (!ignorarDuplicado) {
-      try {
-        const checkResponse = await fetch(`${ENDPOINT}?action=checkCpf&cpf=${participantes[0].cpf}`);
-        const checkResult = await checkResponse.json();
-        if (checkResult.exists) {
-          setShowDuplicateAlert(true);
-          setEnviando(false);
-          return;
-        }
-      } catch (e) {
-        console.warn("Não foi possível verificar duplicidade de CPF, continuando...");
+    try {
+      const checkResponse = await fetch(`${ENDPOINT}?action=checkCpf&cpf=${participantes[0].cpf}`);
+      const checkResult = await checkResponse.json();
+      if (checkResult.exists) {
+        setErro("Este CPF já possui uma inscrição realizada. Caso precise alterar ou adicionar dependentes, entre em contato com a organização.");
+        setEnviando(false);
+        return;
       }
+    } catch (e) {
+      console.warn("Não foi possível verificar duplicidade de CPF, continuando...");
     }
 
     const payload = {
@@ -325,7 +321,7 @@ export default function App() {
             <div className="bg-white p-12 rounded-3xl shadow-xl text-center border border-emerald-100">
               <CheckCircle2 className="w-20 h-20 text-green-500 mx-auto mb-6" />
               <h4 className="text-2xl font-bold mb-2 text-gray-800">Inscrição Confirmada!</h4>
-              <p className="text-gray-600 mb-8">✅ Seus dados foram recebidos. Nos vemos na festa!</p>
+              <p className="text-gray-600 mb-8">✅ Seus dados foram recebidos. Assim que fizer o pagamento, enviar o comprovante para Magna no tel.: 61-99817-3586</p>
               <button onClick={() => window.location.reload()} className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700">Fazer Nova Inscrição</button>
             </div>
           ) : (
@@ -378,7 +374,7 @@ export default function App() {
               <div className="bg-white rounded-xl p-6 shadow-md mt-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Forma de Pagamento</h3>
                 <div className="space-y-3">
-                  {["pix", "dinheiro", "card_templo"].map((method) => (
+                  {["Pix", "Dinheiro", "Cartão_Templo"].map((method) => (
                     <label key={method} className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${pagamento === method ? "bg-blue-50 border-blue-500" : "hover:bg-gray-50"}`}>
                       <input type="radio" name="payment" value={method} checked={pagamento === method} onChange={() => setPagamento(method)} className="w-5 h-5 text-blue-600" />
                       <span className="ml-3 text-sm font-medium text-gray-700 capitalize">{method.replace("_", " ")}</span>
@@ -386,39 +382,6 @@ export default function App() {
                   ))}
                 </div>
               </div>
-
-              {showDuplicateAlert && (
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow-sm mb-6">
-                  <div className="flex items-center gap-3 text-yellow-800 mb-3">
-                    <AlertCircle size={24} />
-                    <p className="font-bold text-lg">CPF já cadastrado</p>
-                  </div>
-                  <p className="text-yellow-700 mb-5">Este CPF já possui uma inscrição. Deseja realizar uma inscrição complementar?</p>
-                  <div className="flex gap-3">
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        setIgnorarDuplicado(true);
-                        setShowDuplicateAlert(false);
-                        setTimeout(() => handleSubmit(), 100);
-                      }}
-                      className="bg-yellow-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-yellow-600 transition-colors shadow-sm"
-                    >
-                      Sim
-                    </button>
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        setShowDuplicateAlert(false);
-                        setErro(null);
-                      }}
-                      className="bg-white border border-yellow-300 text-yellow-700 px-6 py-2 rounded-lg font-bold hover:bg-yellow-100 transition-colors"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </div>
-              )}
 
               {erro && (
                 <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg flex items-center gap-3 text-red-700">
