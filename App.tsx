@@ -292,7 +292,7 @@ export default function App() {
             <div className="bg-white p-12 rounded-3xl shadow-xl text-center border border-emerald-100">
               <CheckCircle2 className="w-20 h-20 text-green-500 mx-auto mb-6" />
               <h4 className="text-2xl font-bold mb-2 text-gray-800">Inscrição Confirmada!</h4>
-              <p className="text-gray-600 mb-8">✅ Seus dados foram recebidos. Nos vemos na festa!</p>
+              <p className="text-gray-600 mb-8">✅ Seus dados foram recebidos. Assim que realizar o pagamento enviar comprovante para a Magna no telefone 61-99817-3586!</p>
               <button onClick={() => window.location.reload()} className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700">Fazer Nova Inscrição</button>
             </div>
           ) : (
@@ -332,7 +332,7 @@ export default function App() {
               <div className="bg-white rounded-xl p-6 shadow-md mt-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Forma de Pagamento</h3>
                 <div className="space-y-3">
-                  {["pix", "dinheiro", "card_templo"].map((method) => (
+                  {["Pix", "Dinheiro", "Cartão_Templo"].map((method) => (
                     <label key={method} className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${pagamento === method ? "bg-blue-50 border-blue-500" : "hover:bg-gray-50"}`}>
                       <input type="radio" name="payment" value={method} checked={pagamento === method} onChange={() => setPagamento(method)} className="w-5 h-5 text-blue-600" />
                       <span className="ml-3 text-sm font-medium text-gray-700 capitalize">{method.replace("_", " ")}</span>
