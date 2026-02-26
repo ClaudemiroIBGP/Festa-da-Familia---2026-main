@@ -73,6 +73,57 @@ export default function App() {
     return value.substring(0, 14);
   };
 
+  const validateCPF = (cpf: string) => {
+    cpf = cpf.replace(/[^\d]+/g, '');
+    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+    let add = 0;
+    for (let i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
+    let rev = 11 - (add % 11);
+    if (rev === 10 || rev === 11) rev = 0;
+    if (rev !== parseInt(cpf.charAt(9))) return false;
+    add = 0;
+    for (let i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
+    rev = 11 - (add % 11);
+    if (rev === 10 || rev === 11) rev = 0;
+    if (rev !== parseInt(cpf.charAt(10))) return false;
+    return true;
+  };
+
+  const generatePixPayload = (amount: number) => {
+    const pixKey = "gracaepazdf@gmail.com";
+    const merchantName = "IBGP FESTA FAMILIA";
+    const merchantCity = "BRASILIA";
+    
+    const f = (id: string, value: string) => id + value.length.toString().padStart(2, '0') + value;
+
+    const gui = f("00", "br.gov.bcb.pix");
+    const key = f("01", pixKey);
+    const merchantAccountInfo = f("26", gui + key);
+
+    let payload = f("00", "01");
+    payload += f("01", "11");
+    payload += merchantAccountInfo;
+    payload += f("52", "0000");
+    payload += f("53", "986");
+    payload += f("54", amount.toFixed(2));
+    payload += f("58", "BR");
+    payload += f("59", merchantName);
+    payload += f("60", merchantCity);
+    payload += f("62", f("05", "***"));
+    payload += "6304";
+
+    let crc = 0xFFFF;
+    for (let i = 0; i < payload.length; i++) {
+      crc ^= (payload.charCodeAt(i) << 8);
+      for (let j = 0; j < 8; j++) {
+        if ((crc & 0x8000) !== 0) crc = (crc << 1) ^ 0x1021;
+        else crc <<= 1;
+      }
+    }
+    const crcStr = (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+    return payload + crcStr;
+  };
+
   const updateParticipante = (index: number, field: keyof Participant, value: any) => {
     setParticipantes((prev) => {
       const next = [...prev];
@@ -108,9 +159,9 @@ export default function App() {
     }
 
     // Validação de CPF (apenas para o responsável)
-    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
-    if (!cpfRegex.test(participantes[0].cpf || "")) {
-      setErro("Por favor, insira um CPF válido no formato XXX.XXX.XXX-XX");
+    const cpfValue = participantes[0].cpf || "";
+    if (!validateCPF(cpfValue)) {
+      setErro("Por favor, insira um CPF válido.");
       return;
     }
 
@@ -167,8 +218,23 @@ export default function App() {
             <h2 className="text-2xl font-bold mb-4 text-gray-800">Pagamento via PIX</h2>
             <p className="mb-4 text-gray-600">Valor total: <strong className="text-blue-600 text-xl">R$ {total.toFixed(2)}</strong></p>
             <div className="bg-gray-100 p-6 rounded-xl mb-6 flex flex-col items-center">
-              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=gracaepazddf@gmail.com`} alt="QR Code" className="mb-4" />
-              <p className="text-xs text-gray-400 font-mono">Chave: gracaepazddf@gmail.com</p>
+              <img 
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(generatePixPayload(total))}`} 
+                alt="QR Code PIX" 
+                className="mb-4 shadow-sm bg-white p-2 rounded-lg" 
+              />
+              <p className="text-[10px] text-gray-500 font-mono break-all bg-white p-2 rounded border border-gray-200 mb-2 select-all">
+                {generatePixPayload(total)}
+              </p>
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(generatePixPayload(total));
+                  alert("Código PIX Copia e Cola copiado!");
+                }}
+                className="text-xs text-blue-600 font-bold hover:underline"
+              >
+                Copiar Código PIX
+              </button>
             </div>
             <div className="flex gap-3">
               <button onClick={() => setShowPixModal(false)} className="flex-1 py-3 rounded-xl bg-gray-200 font-bold">Cancelar</button>
@@ -360,10 +426,12 @@ export default function App() {
                       </select>
                     </div>
                   </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Telefone de Contato *</label>
-                    <input type="tel" value={p.telefone} onChange={(e) => updateParticipante(index, "telefone", e.target.value)} required placeholder="(61) 99999-9999" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-                  </div>
+                  {index === 0 && (
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Telefone de Contato *</label>
+                      <input type="tel" value={p.telefone} onChange={(e) => updateParticipante(index, "telefone", e.target.value)} required placeholder="(61) 99999-9999" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                    </div>
+                  )}
                 </div>
               ))}
 
@@ -374,7 +442,7 @@ export default function App() {
               <div className="bg-white rounded-xl p-6 shadow-md mt-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Forma de Pagamento</h3>
                 <div className="space-y-3">
-                  {["Pix", "Dinheiro", "Cartão_Templo"].map((method) => (
+                  {["pix", "dinheiro", "card_templo"].map((method) => (
                     <label key={method} className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${pagamento === method ? "bg-blue-50 border-blue-500" : "hover:bg-gray-50"}`}>
                       <input type="radio" name="payment" value={method} checked={pagamento === method} onChange={() => setPagamento(method)} className="w-5 h-5 text-blue-600" />
                       <span className="ml-3 text-sm font-medium text-gray-700 capitalize">{method.replace("_", " ")}</span>
