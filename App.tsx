@@ -380,11 +380,6 @@ export default function App() {
                   src={`/foto${i}.jpeg`} 
                   alt={`Foto ${i}`} 
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    console.error(`Erro ao carregar a imagem: /foto${i}.jpeg`);
-                    // Fallback se a imagem não existir
-                    (e.target as HTMLImageElement).src = `https://picsum.photos/seed/ibgp${i}/400/400`;
-                  }}
                 />
               </div>
             ))}
