@@ -377,8 +377,8 @@ export default function App() {
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="aspect-square bg-gray-100 rounded-lg overflow-hidden shadow-md">
                 <img 
-                  src={`/foto${i}.jpeg`} 
-                  alt={`Foto ${i}`} 
+                  src={`public/foto${i}.jpeg`} 
+                  alt={`public/Foto ${i}`} 
                   className="w-full h-full object-cover"
                 />
               </div>
