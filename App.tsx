@@ -374,11 +374,11 @@ export default function App() {
             <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            {[1, 2, 3, 4].map((i) => (
+            {[1,2,3,4].map((i) => (
               <div key={i} className="aspect-square bg-gray-100 rounded-lg overflow-hidden shadow-md">
                 <img 
-                  src={`public/foto${i}.jpeg`} 
-                  alt={`public/Foto ${i}`} 
+                  src={`public/public/foto${i}.jpeg`} 
+                  alt={`public/foto${i}`} 
                   className="w-full h-full object-cover"
                 />
               </div>
