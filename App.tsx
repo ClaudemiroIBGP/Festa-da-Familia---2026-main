@@ -352,12 +352,26 @@ export default function App() {
       </header>
 
       {/* Hero */}
-      <section className="relative min-h-[60vh] flex items-center justify-center text-white text-center px-4 overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 hover:scale-105"
-          style={{ backgroundImage: "url('EF.webp')" }}
-        />
-        <div className="absolute inset-0 bg-black/50" />
+      <section className="relative min-h-[80vh] flex items-center justify-center text-white text-center px-4 overflow-hidden">
+        {/* Mosaico de Fundo */}
+        <div className="absolute inset-0 grid grid-cols-3 md:grid-cols-5 gap-1 opacity-60">
+          {[
+            "16.webp", "20250501_085107.jpg", "20250501_114217.jpg", 
+            "20250501_114951.jpg", "20250501_154937.jpg", "foto1.jpeg", 
+            "foto2.jpeg", "foto3.jpeg", "foto4.jpeg", "16.webp"
+          ].map((img, i) => (
+            <div key={i} className="relative h-full w-full overflow-hidden">
+              <img 
+                src={img} 
+                alt={`Hero ${i}`} 
+                className="absolute inset-0 w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
+        
         <div className="relative max-w-7xl mx-auto py-24 lg:py-32">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">VI Festa da Família IBGP - 2026</h1>
           <p className="text-xl md:text-2xl mb-8 font-light drop-shadow-md">01 de Maio das 08h às 18h | Estância Felicidade - Brazlândia</p>
@@ -372,65 +386,14 @@ export default function App() {
 
       {/* Sobre */}
       <section ref={aboutRef} className="py-20 bg-white px-4">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Sobre o Evento</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto md:mx-0 mb-8" />
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">A VI Festa da Família IBGP é um evento especial projetado para fortalecer os laços familiares em um ambiente acolhedor e cristão.</p>
-            <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4 mx-auto md:mx-0">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-[4/3] bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 p-1">
-                <img 
-                  src={`foto${i}.jpeg`} 
-                  alt={`Foto ${i}`} 
-                  className="w-full h-full object-cover object-top rounded-lg"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            ))}
-          </div>
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Sobre o Evento</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto mb-8" />
+          <p className="text-lg text-gray-700 leading-relaxed mb-6">A VI Festa da Família IBGP é um evento especial projetado para fortalecer os laços familiares em um ambiente acolhedor e cristão.</p>
+          <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
         </div>
       </section>
 
-      {/* Mosaico de Fotos */}
-      <section className="py-20 bg-gray-50 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Mosaico de Momentos</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto mb-12" />
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 auto-rows-[150px] md:auto-rows-[200px]">
-            {[
-              { src: "16.webp", span: "col-span-2 row-span-2" },
-              { src: "20250501_085107.jpg", span: "col-span-1 row-span-1" },
-              { src: "20250501_114217.jpg", span: "col-span-1 row-span-2" },
-              { src: "20250501_114951.jpg", span: "col-span-2 row-span-1" },
-              { src: "20250501_115001.jpg", span: "col-span-1 row-span-1" },
-              { src: "20250501_154937.jpg", span: "col-span-1 row-span-2" },
-              { src: "7.webp", span: "col-span-2 row-span-2" },
-              { src: "EF.webp", span: "col-span-1 row-span-1" },
-              { src: "foto1.jpeg", span: "col-span-1 row-span-1" },
-              { src: "foto2.jpeg", span: "col-span-1 row-span-1" },
-              { src: "foto3.jpeg", span: "col-span-2 row-span-1" },
-              { src: "foto4.jpeg", span: "col-span-1 row-span-2" },
-              { src: "unnamed (1).webp", span: "col-span-1 row-span-1" },
-              { src: "unnamed (3).webp", span: "col-span-1 row-span-1" },
-              { src: "unnamed (4).webp", span: "col-span-1 row-span-1" },
-              { src: "unnamed.webp", span: "col-span-2 row-span-1" }
-            ].map((img, i) => (
-              <div key={i} className={`${img.span} bg-white rounded-xl overflow-hidden shadow-md group relative`}>
-                <img 
-                  src={img.src} 
-                  alt={`Mosaico ${i}`} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Atividades */}
       <section ref={activitiesRef} className="py-20 bg-gradient-to-br from-green-50 to-blue-50 px-4">
@@ -461,6 +424,28 @@ export default function App() {
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Localização</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-orange-500 mx-auto mb-16" />
+          
+          {/* Colagem do Espaço */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 auto-rows-[150px] md:auto-rows-[200px]">
+            {[
+              { src: "espaço/7.webp", span: "col-span-2 row-span-2" },
+              { src: "espaço/EF.webp", span: "col-span-1 row-span-1" },
+              { src: "espaço/unnamed (1).webp", span: "col-span-1 row-span-1" },
+              { src: "espaço/unnamed (3).webp", span: "col-span-1 row-span-1" },
+              { src: "espaço/unnamed (4).webp", span: "col-span-1 row-span-1" },
+              { src: "espaço/unnamed.webp", span: "col-span-2 row-span-1" }
+            ].map((img, i) => (
+              <div key={i} className={`${img.span} bg-white rounded-xl overflow-hidden shadow-lg border-4 border-white rotate-${(i % 3) - 1} hover:rotate-0 transition-transform duration-300`}>
+                <img 
+                  src={img.src} 
+                  alt={`Espaço ${i}`} 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            ))}
+          </div>
+
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden md:flex text-left">
             <div className="md:w-1/2 p-8">
               <div className="flex items-start space-x-4 mb-6">
