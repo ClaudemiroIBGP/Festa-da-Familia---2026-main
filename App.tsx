@@ -422,21 +422,20 @@ export default function App() {
                 <MapPin className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">Estância Felicidade</h3>
-                  <p className="text-gray-600 mb-4">Incra 07 G 02 - Brazlândia, Brasília - DF</p>
-                  <a 
-                    href="https://share.google/CjuaeufQiz9V5s0yi" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm"
-                  >
-                    <Map className="w-4 h-4" />
-                    Abrir no Google Maps
-                  </a>
+                  <p className="text-gray-600">Incra 07 G 02 - Brazlândia, Brasília - DF</p>
                 </div>
               </div>
             </div>
-            <div className="md:w-1/2 bg-gray-200 h-64 md:h-auto flex items-center justify-center">
-              <Map className="w-16 h-16 text-gray-400" />
+            <div className="md:w-1/2 h-64 md:h-auto min-h-[400px]">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3840.6724390369236!2d-48.09002392487153!3d-15.715527284913891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935bb556281434e7%3A0xd0e6b8e9e02c002f!2sEst%C3%A2ncia%20Felicidade!5e0!3m2!1spt-BR!2sbr!4v1772211879876!5m2!1spt-BR!2sbr" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </div>
