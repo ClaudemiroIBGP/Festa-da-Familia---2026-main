@@ -375,8 +375,16 @@ export default function App() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-gradient-to-br from-blue-200 to-green-200 rounded-lg flex items-center justify-center">
-                <Heart className="w-12 h-12 text-white opacity-80" />
+              <div key={i} className="aspect-square bg-gray-100 rounded-lg overflow-hidden shadow-md">
+                <img 
+                  src={`/foto${i}.jpg`} 
+                  alt={`Foto ${i}`} 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback se a imagem não existir
+                    (e.target as HTMLImageElement).src = `https://picsum.photos/seed/ibgp${i}/400/400`;
+                  }}
+                />
               </div>
             ))}
           </div>
