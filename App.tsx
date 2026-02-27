@@ -373,13 +373,13 @@ export default function App() {
             <p className="text-lg text-gray-700 leading-relaxed mb-6">A VI Festa da Família IBGP é um evento especial projetado para fortalecer os laços familiares em um ambiente acolhedor e cristão.</p>
             <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto md:mx-0">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-gray-100 rounded-lg overflow-hidden shadow-md">
+              <div key={i} className="aspect-square bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 p-2 flex items-center justify-center">
                 <img 
                   src={`foto${i}.jpeg`} 
                   alt={`Foto ${i}`} 
-                  className="w-full h-full object-cover"
+                  className="max-w-full max-h-full object-contain"
                 />
               </div>
             ))}
