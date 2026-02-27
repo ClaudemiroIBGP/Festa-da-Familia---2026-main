@@ -377,10 +377,11 @@ export default function App() {
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="aspect-square bg-gray-100 rounded-lg overflow-hidden shadow-md">
                 <img 
-                  src={`public/foto${i}.jpeg`} 
+                  src={`/foto${i}.jpeg`} 
                   alt={`Foto ${i}`} 
                   className="w-full h-full object-cover"
                   onError={(e) => {
+                    console.error(`Erro ao carregar a imagem: /foto${i}.jpeg`);
                     // Fallback se a imagem não existir
                     (e.target as HTMLImageElement).src = `https://picsum.photos/seed/ibgp${i}/400/400`;
                   }}
