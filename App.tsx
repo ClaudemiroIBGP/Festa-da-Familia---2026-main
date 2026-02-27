@@ -436,12 +436,12 @@ export default function App() {
           <div className="max-w-5xl mx-auto mb-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[250px]">
               {[
-                { src: "espaço/7.webp", span: "col-span-2 row-span-2" },
-                { src: "espaço/EF.webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed (1).webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed (3).webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed (4).webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed.webp", span: "col-span-2 row-span-1" }
+                { src: "7.webp", span: "col-span-2 row-span-2" },
+                { src: "EF.webp", span: "col-span-1 row-span-1" },
+                { src: "unnamed (1).webp", span: "col-span-1 row-span-1" },
+                { src: "unnamed (3).webp", span: "col-span-1 row-span-1" },
+                { src: "unnamed (4).webp", span: "col-span-1 row-span-1" },
+                { src: "unnamed.webp", span: "col-span-2 row-span-1" }
               ].map((img, i) => (
                 <div 
                   key={i} 
