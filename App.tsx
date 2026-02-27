@@ -405,12 +405,18 @@ export default function App() {
               { src: "20250501_085107.jpg", span: "col-span-1 row-span-1" },
               { src: "20250501_114217.jpg", span: "col-span-1 row-span-2" },
               { src: "20250501_114951.jpg", span: "col-span-2 row-span-1" },
+              { src: "20250501_115001.jpg", span: "col-span-1 row-span-1" },
               { src: "20250501_154937.jpg", span: "col-span-1 row-span-2" },
+              { src: "7.webp", span: "col-span-2 row-span-2" },
+              { src: "EF.webp", span: "col-span-1 row-span-1" },
               { src: "foto1.jpeg", span: "col-span-1 row-span-1" },
               { src: "foto2.jpeg", span: "col-span-1 row-span-1" },
               { src: "foto3.jpeg", span: "col-span-2 row-span-1" },
-              { src: "foto4.jpeg", span: "col-span-1 row-span-2" }
-              
+              { src: "foto4.jpeg", span: "col-span-1 row-span-2" },
+              { src: "unnamed (1).webp", span: "col-span-1 row-span-1" },
+              { src: "unnamed (3).webp", span: "col-span-1 row-span-1" },
+              { src: "unnamed (4).webp", span: "col-span-1 row-span-1" },
+              { src: "unnamed.webp", span: "col-span-2 row-span-1" }
             ].map((img, i) => (
               <div key={i} className={`${img.span} bg-white rounded-xl overflow-hidden shadow-md group relative`}>
                 <img 
