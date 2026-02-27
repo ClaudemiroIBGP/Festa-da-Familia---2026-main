@@ -319,17 +319,27 @@ export default function App() {
 
       {/* Header */}
       <header className="bg-white shadow-lg sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center shadow-md">
-              <Heart className="text-white w-6 h-6 fill-current" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center space-x-3 md:w-1/3">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center shadow-md">
+              <Heart className="text-white w-5 h-5 fill-current" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-800">IBGP</h1>
-              <p className="text-xs text-gray-600">VI Festa da Família</p>
+            <div className="hidden sm:block">
+              <h1 className="text-lg font-bold text-gray-800 leading-none">IBGP</h1>
+              <p className="text-[10px] text-gray-600">VI Festa da Família</p>
             </div>
           </div>
-          <nav className="hidden md:flex space-x-8">
+          
+          <div className="flex justify-center md:w-1/3">
+            <img 
+              src="ID Visual Graça e Paz 2024-01.png" 
+              alt="Logo Graça e Paz" 
+              className="h-16 md:h-20 object-contain"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+
+          <nav className="hidden md:flex space-x-6 md:w-1/3 justify-end">
             {[
               { name: "Sobre", ref: aboutRef, id: "about" },
               { name: "Atividades", ref: activitiesRef, id: "activities" },
@@ -350,9 +360,13 @@ export default function App() {
       </header>
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-r from-blue-600 via-green-500 to-orange-500 text-white py-24 lg:py-32 text-center px-4">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative max-w-7xl mx-auto">
+      <section className="relative min-h-[60vh] flex items-center justify-center text-white text-center px-4 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 hover:scale-105"
+          style={{ backgroundImage: "url('Fachada igreja1.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative max-w-7xl mx-auto py-24 lg:py-32">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">VI Festa da Família IBGP - 2026</h1>
           <p className="text-xl md:text-2xl mb-8 font-light drop-shadow-md">01 de Maio das 08h às 18h | Estância Felicidade - Brazlândia</p>
           <button 
@@ -380,6 +394,32 @@ export default function App() {
                   src={`foto${i}.jpeg`} 
                   alt={`Foto ${i}`} 
                   className="w-full h-full object-cover object-top rounded-lg"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Galeria de Fotos */}
+      <section className="py-20 bg-gray-50 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Galeria de Momentos</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto mb-12" />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[
+              "16.webp", "20250501_085107.jpg", "20250501_114217.jpg", "20250501_114951.jpg",
+              "20250501_115001.jpg", "20250501_154937.jpg", "7.webp", "EF.webp",
+              "foto1.jpeg", "foto2.jpeg", "foto3.jpeg", "foto4.jpeg",
+              "unnamed (1).webp", "unnamed (3).webp", "unnamed (4).webp", "unnamed.webp"
+            ].map((img, i) => (
+              <div key={i} className="aspect-square bg-white rounded-xl overflow-hidden shadow-md group">
+                <img 
+                  src={img} 
+                  alt={`Galeria ${i}`} 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  referrerPolicy="no-referrer"
                 />
               </div>
             ))}
