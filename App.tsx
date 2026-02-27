@@ -422,7 +422,16 @@ export default function App() {
                 <MapPin className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">Estância Felicidade</h3>
-                  <p className="text-gray-600">Incra 07 G 02 - Brazlândia, Brasília - DF</p>
+                  <p className="text-gray-600 mb-4">Incra 07 G 02 - Brazlândia, Brasília - DF</p>
+                  <a 
+                    href="https://share.google/CjuaeufQiz9V5s0yi" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm"
+                  >
+                    <Map className="w-4 h-4" />
+                    Abrir no Google Maps
+                  </a>
                 </div>
               </div>
             </div>
