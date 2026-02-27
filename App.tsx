@@ -353,16 +353,23 @@ export default function App() {
 
       {/* Hero */}
       <section className="relative min-h-[80vh] flex items-center justify-center text-white text-center px-4 overflow-hidden">
-        {/* Mosaico de Fundo */}
-        <div className="absolute inset-0 grid grid-cols-3 md:grid-cols-5 gap-1 opacity-60">
+        {/* Mosaico Justaposto de Fundo */}
+        <div className="absolute inset-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0.5 opacity-50">
           {[
-            "16.webp", "20250501_085107.jpg", "20250501_114217.jpg", 
-            "20250501_114951.jpg", "20250501_154937.jpg", "foto1.jpeg", 
-            "foto2.jpeg", "foto3.jpeg", "foto4.jpeg", "16.webp"
+            { src: "16.webp", span: "col-span-2 row-span-2" },
+            { src: "20250501_085107.jpg", span: "col-span-1 row-span-1" },
+            { src: "20250501_114217.jpg", span: "col-span-1 row-span-2" },
+            { src: "20250501_114951.jpg", span: "col-span-2 row-span-1" },
+            { src: "20250501_154937.jpg", span: "col-span-1 row-span-2" },
+            { src: "foto1.jpeg", span: "col-span-1 row-span-1" },
+            { src: "foto2.jpeg", span: "col-span-1 row-span-1" },
+            { src: "foto3.jpeg", span: "col-span-2 row-span-1" },
+            { src: "foto4.jpeg", span: "col-span-1 row-span-2" },
+            { src: "16.webp", span: "col-span-1 row-span-1" }
           ].map((img, i) => (
-            <div key={i} className="relative h-full w-full overflow-hidden">
+            <div key={i} className={`${img.span} relative overflow-hidden`}>
               <img 
-                src={img} 
+                src={img.src} 
                 alt={`Hero ${i}`} 
                 className="absolute inset-0 w-full h-full object-cover"
                 referrerPolicy="no-referrer"
@@ -370,7 +377,7 @@ export default function App() {
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
         
         <div className="relative max-w-7xl mx-auto py-24 lg:py-32">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">VI Festa da Família IBGP - 2026</h1>
@@ -425,25 +432,42 @@ export default function App() {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Localização</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-orange-500 mx-auto mb-16" />
           
-          {/* Colagem do Espaço */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 auto-rows-[150px] md:auto-rows-[200px]">
-            {[
-              { src: "espaço/7.webp", span: "col-span-2 row-span-2" },
-              { src: "espaço/EF.webp", span: "col-span-1 row-span-1" },
-              { src: "espaço/unnamed (1).webp", span: "col-span-1 row-span-1" },
-              { src: "espaço/unnamed (3).webp", span: "col-span-1 row-span-1" },
-              { src: "espaço/unnamed (4).webp", span: "col-span-1 row-span-1" },
-              { src: "espaço/unnamed.webp", span: "col-span-2 row-span-1" }
-            ].map((img, i) => (
-              <div key={i} className={`${img.span} bg-white rounded-xl overflow-hidden shadow-lg border-4 border-white rotate-${(i % 3) - 1} hover:rotate-0 transition-transform duration-300`}>
-                <img 
-                  src={img.src} 
-                  alt={`Espaço ${i}`} 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            ))}
+          {/* Colagem do Espaço - Estilo Instagram */}
+          <div className="max-w-5xl mx-auto mb-16">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[250px]">
+              {[
+                { src: "espaço/7.webp", span: "col-span-2 row-span-2" },
+                { src: "espaço/EF.webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed (1).webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed (3).webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed (4).webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed.webp", span: "col-span-2 row-span-1" }
+              ].map((img, i) => (
+                <div 
+                  key={i} 
+                  className={`${img.span} group relative bg-white p-2 shadow-xl border border-gray-100 transition-all duration-500 hover:z-10 hover:scale-105 hover:-rotate-0 rotate-${(i % 3) - 1}`}
+                >
+                  <div className="w-full h-full overflow-hidden bg-gray-50">
+                    <img 
+                      src={img.src} 
+                      alt={`Espaço ${i}`} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        // Fallback para tentar sem acento se falhar
+                        const target = e.target as HTMLImageElement;
+                        if (target.src.includes('espaço')) {
+                          target.src = target.src.replace('espaço', 'espaco');
+                        }
+                      }}
+                    />
+                  </div>
+                  {/* Overlay estilo Instagram */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 text-gray-500 italic text-sm">Conheça a Estância Felicidade - O cenário perfeito para nossa festa!</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden md:flex text-left">
