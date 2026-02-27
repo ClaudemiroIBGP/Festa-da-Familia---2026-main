@@ -375,11 +375,11 @@ export default function App() {
           </div>
           <div className="grid grid-cols-2 gap-4 mx-auto md:mx-0">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+              <div key={i} className="aspect-[4/3] bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 p-1">
                 <img 
                   src={`foto${i}.jpeg`} 
                   alt={`Foto ${i}`} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top rounded-lg"
                 />
               </div>
             ))}
