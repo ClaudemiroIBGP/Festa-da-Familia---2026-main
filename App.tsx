@@ -351,51 +351,74 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative min-h-[80vh] flex items-center justify-center text-white text-center px-4 overflow-hidden">
-        {/* Mosaico Justaposto de Fundo */}
-        <div className="absolute inset-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0.5 opacity-50">
+      {/* Hero - Novo Modelo de Banner */}
+      <section className="py-6 md:py-10 px-4 relative overflow-hidden">
+        {/* Mosaico de Fundo Sutil */}
+        <div className="absolute inset-0 grid grid-cols-4 md:grid-cols-8 gap-1 opacity-10 pointer-events-none">
           {[
-            { src: "20250501_085107.jpg", span: "col-span-1 row-span-1" },
-            { src: "20250501_114217.jpg", span: "col-span-1 row-span-2" },
-            { src: "20250501_114951.jpg", span: "col-span-2 row-span-1" },
-            { src: "20250501_154937.jpg", span: "col-span-1 row-span-2" },
-            { src: "foto1.jpeg", span: "col-span-1 row-span-1" },
-            { src: "foto2.jpeg", span: "col-span-1 row-span-1" },
-            { src: "foto3.jpeg", span: "col-span-2 row-span-1" },
-            { src: "foto4.jpeg", span: "col-span-1 row-span-2" },
+            "20250501_085107.jpg", "20250501_114217.jpg", "20250501_114951.jpg", 
+            "20250501_115001.jpg", "20250501_154937.jpg", "foto1.jpeg", 
+            "foto2.jpeg", "foto3.jpeg"
           ].map((img, i) => (
-            <div key={i} className={`${img.span} relative overflow-hidden`}>
-              <img 
-                src={img.src} 
-                alt={`Hero ${i}`} 
-                className="absolute inset-0 w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
+            <div key={i} className="relative h-32 w-full overflow-hidden">
+              <img src={img} alt="" className="w-full h-full object-cover" />
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
-        
-        <div className="relative max-w-7xl mx-auto py-24 lg:py-32">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">VI Festa da Família IBGP - 2026</h1>
-          <p className="text-xl md:text-2xl mb-8 font-light drop-shadow-md">01 de Maio das 08h às 18h | Estância Felicidade - Brazlândia</p>
-          <button 
-            onClick={() => scrollTo(registrationRef, "registration")}
-            className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg"
-          >
-            Garanta seu ingresso!
-          </button>
+
+        <div className="max-w-[1200px] mx-auto relative overflow-hidden rounded-xl shadow-2xl group">
+          <img 
+            src="banner_festa_familia_ibgp_1.png" 
+            alt="VI Festa da Família IBGP - 2026" 
+            className="w-full h-auto block object-cover"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "espaco/EF.webp";
+            }}
+          />
+          
+          <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/10 flex flex-col justify-center items-center text-center p-4 md:p-10">
+            <h1 className="font-black text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] text-white drop-shadow-[2px_2px_8px_rgba(0,0,0,0.7)] mb-4 md:mb-6 leading-[1.1] uppercase tracking-tight font-['Arial_Black',_Arial,_sans-serif]">
+              VI Festa da Família IBGP - 2026
+            </h1>
+            
+            <p className="font-semibold text-sm sm:text-lg md:text-2xl lg:text-[1.8rem] text-white drop-shadow-[1px_1px_4px_rgba(0,0,0,0.7)] mb-6 md:mb-8 leading-[1.3]">
+              01 de Maio das 08h às 18h<br />
+              Estância Felicidade - Brazlândia
+            </p>
+            
+            <button 
+              onClick={() => scrollTo(registrationRef, "registration")}
+              className="bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-bold text-xs sm:text-base md:text-xl lg:text-[1.5rem] px-6 py-3 md:px-10 md:py-4 rounded-full transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,107,53,0.6)] shadow-[0_4px_15px_rgba(255,107,53,0.4)] uppercase tracking-wider"
+            >
+              Garanta seu ingresso!
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Sobre */}
       <section ref={aboutRef} className="py-20 bg-white px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Sobre o Evento</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto mb-8" />
-          <p className="text-lg text-gray-700 leading-relaxed mb-6">A VI Festa da Família IBGP é um evento especial projetado para fortalecer os laços familiares em um ambiente acolhedor e cristão.</p>
-          <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center md:text-left">Sobre o Evento</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto md:mx-0 mb-8" />
+            <p className="text-lg text-gray-700 leading-relaxed mb-6">A VI Festa da Família IBGP é um evento especial projetado para fortalecer os laços familiares em um ambiente acolhedor e cristão.</p>
+            <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {["foto1.jpeg", "foto2.jpeg", "foto3.jpeg", "foto4.jpeg"].map((img, i) => (
+              <div key={i} className="aspect-square rounded-xl overflow-hidden shadow-lg border-4 border-white -rotate-2 hover:rotate-0 transition-transform duration-300">
+                <img 
+                  src={img} 
+                  alt={`Sobre ${i}`} 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -432,18 +455,22 @@ export default function App() {
           
           {/* Colagem do Espaço - Estilo Instagram */}
           <div className="max-w-5xl mx-auto mb-16">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[250px]">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 auto-rows-[150px] md:auto-rows-[200px]">
               {[
-                { src: "espaço/7.webp", span: "col-span-2 row-span-2" },
-                { src: "espaço/EF.webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed (1).webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed (3).webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed (4).webp", span: "col-span-1 row-span-1" },
-                { src: "espaço/unnamed.webp", span: "col-span-2 row-span-1" }
+                { src: "espaco/7.webp", span: "col-span-2 row-span-2" },
+                { src: "espaco/EF.webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/8.webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/10.webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/16.webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/unnamed (1).webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/unnamed (2).webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/unnamed (3).webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/unnamed (4).webp", span: "col-span-1 row-span-1" },
+                { src: "espaco/unnamed.webp", span: "col-span-2 row-span-1" }
               ].map((img, i) => (
                 <div 
                   key={i} 
-                  className={`${img.span} group relative bg-white p-2 shadow-xl border border-gray-100 transition-all duration-500 hover:z-10 hover:scale-105 hover:-rotate-0 rotate-${(i % 3) - 1}`}
+                  className={`${img.span} group relative bg-white p-1.5 shadow-xl border border-gray-100 transition-all duration-500 hover:z-10 hover:scale-105 hover:-rotate-0 rotate-${(i % 3) - 1}`}
                 >
                   <div className="w-full h-full overflow-hidden bg-gray-50">
                     <img 
@@ -454,8 +481,8 @@ export default function App() {
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         // Tenta sem o prefixo da pasta se falhar
-                        if (target.src.includes('espaço/')) {
-                          target.src = target.src.split('espaço/')[1];
+                        if (target.src.includes('espaco/')) {
+                          target.src = target.src.split('espaco/')[1];
                         }
                       }}
                     />
