@@ -348,7 +348,7 @@ export default function App() {
 
       {/* Hero - Novo Modelo de Banner */}
       <section className="relative overflow-hidden w-full bg-white">
-        <div className="relative w-full max-w-[1920px] mx-auto h-[250px] sm:h-[350px] md:h-[450px] lg:h-[520px]">
+        <div className="relative w-full max-w-[1920px] mx-auto h-[230px] sm:h-[320px] md:h-[410px] lg:h-[490px]">
           <img 
             src="espaco/16.webp" 
             alt="VI Festa da Família IBGP - 2026" 
