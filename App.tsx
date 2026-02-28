@@ -4,6 +4,7 @@
  */
 
 import React, { useMemo, useState, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Heart, Plus, Trash2, CheckCircle2, AlertCircle, Loader2, MapPin, Map, Sun, Trophy, Volleyball, Waves, Square } from "lucide-react";
 
 type ParticipantType = "adulto" | "crianca" | "isento";
@@ -326,7 +327,7 @@ export default function App() {
             <img 
               src="ID Visual Graça e Paz 2024-01.png" 
               alt="Logo Graça e Paz" 
-              className="h-20 md:h-25 object-contain"
+              className="h-16 md:h-20 object-contain"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -353,20 +354,43 @@ export default function App() {
 
       {/* Hero - Novo Modelo de Banner */}
       <section className="py-6 md:py-10 px-4 relative overflow-hidden">
-        {/* Mosaico de Fundo Sutil */}
-        <div className="absolute inset-0 grid grid-cols-4 md:grid-cols-8 gap-1 opacity-10 pointer-events-none">
-          {[
-            "20250501_085107.jpg", "20250501_114217.jpg", "20250501_114951.jpg", 
-            "20250501_115001.jpg", "20250501_154937.jpg", "foto1.jpeg", 
-            "foto2.jpeg", "foto3.jpeg"
-          ].map((img, i) => (
-            <div key={i} className="relative h-32 w-full overflow-hidden">
-              <img src={img} alt="" className="w-full h-full object-cover" />
-            </div>
-          ))}
+        {/* Fita de Filme (Marquee) de Fundo */}
+        <div className="absolute inset-0 flex items-center opacity-15 pointer-events-none md:pointer-events-auto overflow-hidden">
+          <motion.div 
+            className="flex gap-4 whitespace-nowrap"
+            animate={{ x: [0, -1920] }}
+            transition={{ 
+              duration: 40, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+          >
+            {[...Array(2)].map((_, setIdx) => (
+              <div key={setIdx} className="flex gap-4">
+                {[
+                  "20250501_085107.jpg", "20250501_114217.jpg", "20250501_114951.jpg", 
+                  "20250501_115001.jpg", "20250501_154937.jpg", "foto1.jpeg", 
+                  "foto2.jpeg", "foto3.jpeg"
+                ].map((img, i) => (
+                  <motion.div 
+                    key={`${setIdx}-${i}`} 
+                    className="relative h-40 w-64 md:h-60 md:w-96 overflow-hidden rounded-lg shadow-lg flex-shrink-0 cursor-pointer"
+                    whileHover={{ scale: 1.15, zIndex: 10, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <img 
+                      src={img} 
+                      alt="" 
+                      className="w-full h-full object-cover pointer-events-none" 
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            ))}
+          </motion.div>
         </div>
 
-        <div className="max-w-[1200px] mx-auto relative overflow-hidden rounded-xl shadow-2xl group">
+        <div className="max-w-[1200px] mx-auto relative overflow-hidden rounded-xl shadow-2xl group z-10">
           <img 
             src="banner_festa_familia_ibgp_1.png" 
             alt="VI Festa da Família IBGP - 2026" 
@@ -450,7 +474,7 @@ export default function App() {
       {/* Localização */}
       <section ref={locationRef} className="py-20 bg-white px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Local</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Localização</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-orange-500 mx-auto mb-16" />
           
           {/* Colagem do Espaço - Estilo Instagram */}
