@@ -356,7 +356,7 @@ export default function App() {
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "espaco/EF.webp";
+              target.src = "16.webp";
             }}
           />
           
