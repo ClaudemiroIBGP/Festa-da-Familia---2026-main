@@ -33,6 +33,7 @@ export default function App() {
   const [showPixChoice, setShowPixChoice] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // Refs para scroll
   const aboutRef = useRef<HTMLElement>(null);
@@ -346,12 +347,12 @@ export default function App() {
       </header>
 
       {/* Hero - Novo Modelo de Banner */}
-      <section className="relative overflow-hidden w-full">
-        <div className="relative overflow-hidden z-10 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] w-full">
+      <section className="relative overflow-hidden w-full bg-white">
+        <div className="relative w-full max-w-[1920px] mx-auto">
           <img 
             src="banner_festa_familia_ibgp_1.png" 
             alt="VI Festa da Família IBGP - 2026" 
-            className="w-full h-full block object-cover"
+            className="w-full h-auto block"
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -359,22 +360,20 @@ export default function App() {
             }}
           />
           
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 md:p-6 bg-black/10">
+          <div className="absolute inset-0 flex flex-col justify-center items-center p-4">
             <img 
               src="LOGO FESTA DA FAMILIA IBGP..png" 
               alt="Logo Festa da Família" 
-              className="max-w-[280px] sm:max-w-[400px] md:max-w-[550px] lg:max-w-[700px] h-auto mb-4 md:mb-6 drop-shadow-[0_4px_15px_rgba(0,0,0,0.5)]"
+              className="w-[70%] sm:w-[60%] md:w-[50%] lg:w-[45%] h-auto drop-shadow-[0_8px_25px_rgba(0,0,0,0.4)]"
               referrerPolicy="no-referrer"
             />
-            
-            <p className="font-semibold text-sm sm:text-lg md:text-2xl lg:text-[1.8rem] text-white drop-shadow-[1px_1px_4px_rgba(0,0,0,0.8)] mb-6 md:mb-8 leading-[1.3] uppercase">
-              01 de Maio das 08h às 18h<br />
-              Estância Felicidade - Brazlândia
-            </p>
-            
+          </div>
+
+          {/* Botão no canto inferior direito conforme imagem de referência */}
+          <div className="absolute bottom-[8%] right-[5%] z-20">
             <button 
               onClick={() => scrollTo(registrationRef, "registration")}
-              className="bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-bold text-xs sm:text-base md:text-xl lg:text-[1.5rem] px-6 py-3 md:px-10 md:py-4 rounded-full transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,107,53,0.6)] shadow-[0_4px_15px_rgba(255,107,53,0.4)] uppercase tracking-wider"
+              className="bg-[#ff8a3d] text-white font-bold text-[10px] sm:text-sm md:text-lg lg:text-xl px-4 py-2 md:px-10 md:py-4 rounded-2xl transition-all hover:scale-105 hover:shadow-[0_8px_25px_rgba(255,138,61,0.5)] shadow-lg uppercase tracking-wider"
             >
               Garanta seu ingresso!
             </button>
@@ -416,6 +415,7 @@ export default function App() {
                     className="relative h-48 w-72 md:h-64 md:w-96 overflow-hidden rounded-2xl shadow-2xl flex-shrink-0 cursor-pointer border-4 border-white"
                     whileHover={{ scale: 1.05, zIndex: 10 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    onClick={() => setSelectedImage(img)}
                   >
                     <img 
                       src={img} 
@@ -679,6 +679,40 @@ export default function App() {
         <p className="text-gray-400 mb-4">Evento exclusivo para membros e convidados IBGP</p>
         <p className="text-gray-500 text-sm">© 2026 IBGP • v2.3 • Todos os direitos reservados.</p>
       </footer>
+
+      {/* Full Screen Image Viewer */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4 md:p-10 cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-full max-h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img 
+                src={selectedImage} 
+                alt="Full screen view" 
+                className="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain"
+                referrerPolicy="no-referrer"
+              />
+              <button 
+                onClick={() => setSelectedImage(null)}
+                className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors p-2"
+              >
+                <Plus className="w-10 h-10 rotate-45" />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
