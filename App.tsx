@@ -450,7 +450,7 @@ export default function App() {
       {/* Localização */}
       <section ref={locationRef} className="py-20 bg-white px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Localização</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Local</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-orange-500 mx-auto mb-16" />
           
           {/* Colagem do Espaço - Estilo Instagram */}
