@@ -353,48 +353,12 @@ export default function App() {
       </header>
 
       {/* Hero - Novo Modelo de Banner */}
-      <section className="py-6 md:py-10 px-4 relative overflow-hidden">
-        {/* Fita de Filme (Marquee) de Fundo */}
-        <div className="absolute inset-0 flex items-center opacity-15 pointer-events-none md:pointer-events-auto overflow-hidden">
-          <motion.div 
-            className="flex gap-4 whitespace-nowrap"
-            animate={{ x: [0, -1920] }}
-            transition={{ 
-              duration: 40, 
-              repeat: Infinity, 
-              ease: "linear" 
-            }}
-          >
-            {[...Array(2)].map((_, setIdx) => (
-              <div key={setIdx} className="flex gap-4">
-                {[
-                  "20250501_085107.jpg", "20250501_114217.jpg", "20250501_114951.jpg", 
-                  "20250501_115001.jpg", "20250501_154937.jpg", "foto1.jpeg", 
-                  "foto2.jpeg", "foto3.jpeg"
-                ].map((img, i) => (
-                  <motion.div 
-                    key={`${setIdx}-${i}`} 
-                    className="relative h-40 w-64 md:h-60 md:w-96 overflow-hidden rounded-lg shadow-lg flex-shrink-0 cursor-pointer"
-                    whileHover={{ scale: 1.15, zIndex: 10, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  >
-                    <img 
-                      src={img} 
-                      alt="" 
-                      className="w-full h-full object-cover pointer-events-none" 
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        <div className="max-w-[1200px] mx-auto relative overflow-hidden rounded-xl shadow-2xl group z-10">
+      <section className="py-4 md:py-6 px-4 relative overflow-hidden">
+        <div className="max-w-[1200px] mx-auto relative overflow-hidden rounded-xl shadow-2xl group z-10 max-h-[250px] md:max-h-[400px]">
           <img 
             src="banner_festa_familia_ibgp_1.png" 
             alt="VI Festa da Família IBGP - 2026" 
-            className="w-full h-auto block object-cover"
+            className="w-full h-full block object-cover"
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -402,19 +366,19 @@ export default function App() {
             }}
           />
           
-          <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/10 flex flex-col justify-center items-center text-center p-4 md:p-10">
-            <h1 className="font-black text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] text-white drop-shadow-[2px_2px_8px_rgba(0,0,0,0.7)] mb-4 md:mb-6 leading-[1.1] uppercase tracking-tight font-['Arial_Black',_Arial,_sans-serif]">
+          <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/10 flex flex-col justify-center items-center text-center p-4 md:p-6">
+            <h1 className="font-black text-xl sm:text-3xl md:text-4xl lg:text-[2.8rem] text-white drop-shadow-[2px_2px_8px_rgba(0,0,0,0.7)] mb-2 md:mb-4 leading-[1.1] uppercase tracking-tight font-['Arial_Black',_Arial,_sans-serif]">
               VI Festa da Família IBGP - 2026
             </h1>
             
-            <p className="font-semibold text-sm sm:text-lg md:text-2xl lg:text-[1.8rem] text-white drop-shadow-[1px_1px_4px_rgba(0,0,0,0.7)] mb-6 md:mb-8 leading-[1.3]">
+            <p className="font-semibold text-xs sm:text-base md:text-xl lg:text-[1.4rem] text-white drop-shadow-[1px_1px_4px_rgba(0,0,0,0.7)] mb-4 md:mb-6 leading-[1.3]">
               01 de Maio das 08h às 18h<br />
               Estância Felicidade - Brazlândia
             </p>
             
             <button 
               onClick={() => scrollTo(registrationRef, "registration")}
-              className="bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-bold text-xs sm:text-base md:text-xl lg:text-[1.5rem] px-6 py-3 md:px-10 md:py-4 rounded-full transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,107,53,0.6)] shadow-[0_4px_15px_rgba(255,107,53,0.4)] uppercase tracking-wider"
+              className="bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-bold text-[10px] sm:text-sm md:text-lg lg:text-[1.2rem] px-5 py-2 md:px-8 md:py-3 rounded-full transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,107,53,0.6)] shadow-[0_4px_15px_rgba(255,107,53,0.4)] uppercase tracking-wider"
             >
               Garanta seu ingresso!
             </button>
@@ -423,26 +387,51 @@ export default function App() {
       </section>
 
       {/* Sobre */}
-      <section ref={aboutRef} className="py-20 bg-white px-4">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center md:text-left">Sobre o Evento</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto md:mx-0 mb-8" />
+      <section ref={aboutRef} className="py-16 bg-white px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Sobre o Evento</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto mb-8" />
+          <div className="max-w-3xl mx-auto">
             <p className="text-lg text-gray-700 leading-relaxed mb-6">A VI Festa da Família IBGP é um evento especial projetado para fortalecer os laços familiares em um ambiente acolhedor e cristão.</p>
             <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            {["foto1.jpeg", "foto2.jpeg", "foto3.jpeg", "foto4.jpeg"].map((img, i) => (
-              <div key={i} className="aspect-square rounded-xl overflow-hidden shadow-lg border-4 border-white -rotate-2 hover:rotate-0 transition-transform duration-300">
-                <img 
-                  src={img} 
-                  alt={`Sobre ${i}`} 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+        </div>
+
+        {/* Fita de Filme (Marquee) em Alta Resolução */}
+        <div className="relative flex items-center overflow-hidden py-8">
+          <motion.div 
+            className="flex gap-6 whitespace-nowrap"
+            animate={{ x: [0, -1920] }}
+            transition={{ 
+              duration: 35, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+          >
+            {[...Array(2)].map((_, setIdx) => (
+              <div key={setIdx} className="flex gap-6">
+                {[
+                  "20250501_085107.jpg", "20250501_114217.jpg", "20250501_114951.jpg", 
+                  "20250501_115001.jpg", "20250501_154937.jpg", "foto1.jpeg", 
+                  "foto2.jpeg", "foto3.jpeg"
+                ].map((img, i) => (
+                  <motion.div 
+                    key={`${setIdx}-${i}`} 
+                    className="relative h-48 w-72 md:h-64 md:w-96 overflow-hidden rounded-2xl shadow-2xl flex-shrink-0 cursor-pointer border-4 border-white"
+                    whileHover={{ scale: 1.05, zIndex: 10 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <img 
+                      src={img} 
+                      alt="" 
+                      className="w-full h-full object-cover" 
+                      referrerPolicy="no-referrer"
+                    />
+                  </motion.div>
+                ))}
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
