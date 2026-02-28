@@ -350,13 +350,13 @@ export default function App() {
       <section className="relative overflow-hidden w-full bg-white">
         <div className="relative w-full max-w-[1920px] mx-auto h-[180px] sm:h-[280px] md:h-[380px] lg:h-[420px]">
           <img 
-            src="banner_festa_familia_ibgp_1.png" 
+            src="espaco/16.webp" 
             alt="VI Festa da Família IBGP - 2026" 
             className="w-full h-full block object-cover"
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "16.webp";
+              target.src = "banner_festa_familia_ibgp_1.png";
             }}
           />
           
