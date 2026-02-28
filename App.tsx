@@ -437,6 +437,9 @@ export default function App() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[250px]">
               {[
                 { src: "7.webp", span: "col-span-2 row-span-2" },
+                { src: "8.webp", span: "col-span-2 row-span-2" },
+                { src: "10.webp", span: "col-span-2 row-span-2" },
+                { src: "16.webp", span: "col-span-2 row-span-2" },
                 { src: "EF.webp", span: "col-span-1 row-span-1" },
                 { src: "unnamed (1).webp", span: "col-span-1 row-span-1" },
                 { src: "unnamed (3).webp", span: "col-span-1 row-span-1" },
