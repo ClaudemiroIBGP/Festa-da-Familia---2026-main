@@ -320,19 +320,12 @@ export default function App() {
 
       {/* Header */}
       <header className="bg-white shadow-lg sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="hidden md:block md:w-1/3" />
-          
-          <div className="flex justify-center md:w-1/3">
-            <img 
-              src="ID Visual Graça e Paz 2024-01.png" 
-              alt="Logo Graça e Paz" 
-              className="h-16 md:h-20 object-contain"
-              referrerPolicy="no-referrer"
-            />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex justify-between items-center gap-4">
+          <div className="flex items-center">
+            <h2 className="text-xl font-bold text-blue-600 hidden sm:block">IBGP</h2>
           </div>
 
-          <nav className="hidden md:flex space-x-6 md:w-1/3 justify-end">
+          <nav className="flex space-x-6 justify-end">
             {[
               { name: "Sobre", ref: aboutRef, id: "about" },
               { name: "Atividades", ref: activitiesRef, id: "activities" },
@@ -353,8 +346,8 @@ export default function App() {
       </header>
 
       {/* Hero - Novo Modelo de Banner */}
-      <section className="py-4 md:py-6 px-4 relative overflow-hidden">
-        <div className="max-w-[1200px] mx-auto relative overflow-hidden rounded-xl shadow-2xl group z-10 max-h-[250px] md:max-h-[400px]">
+      <section className="relative overflow-hidden w-full">
+        <div className="relative overflow-hidden z-10 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] w-full">
           <img 
             src="banner_festa_familia_ibgp_1.png" 
             alt="VI Festa da Família IBGP - 2026" 
@@ -366,19 +359,22 @@ export default function App() {
             }}
           />
           
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 md:p-6">
-            <h1 className="font-black text-xl sm:text-3xl md:text-4xl lg:text-[2.8rem] text-white drop-shadow-[2px_2px_8px_rgba(0,0,0,0.7)] mb-2 md:mb-4 leading-[1.1] uppercase tracking-tight font-['Arial_Black',_Arial,_sans-serif]">
-              VI Festa da Família IBGP - 2026
-            </h1>
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 md:p-6 bg-black/10">
+            <img 
+              src="LOGO FESTA DA FAMILIA IBGP..png" 
+              alt="Logo Festa da Família" 
+              className="max-w-[280px] sm:max-w-[400px] md:max-w-[550px] lg:max-w-[700px] h-auto mb-4 md:mb-6 drop-shadow-[0_4px_15px_rgba(0,0,0,0.5)]"
+              referrerPolicy="no-referrer"
+            />
             
-            <p className="font-semibold text-xs sm:text-base md:text-xl lg:text-[1.4rem] text-white drop-shadow-[1px_1px_4px_rgba(0,0,0,0.7)] mb-4 md:mb-6 leading-[1.3]">
+            <p className="font-semibold text-sm sm:text-lg md:text-2xl lg:text-[1.8rem] text-white drop-shadow-[1px_1px_4px_rgba(0,0,0,0.8)] mb-6 md:mb-8 leading-[1.3] uppercase">
               01 de Maio das 08h às 18h<br />
               Estância Felicidade - Brazlândia
             </p>
             
             <button 
               onClick={() => scrollTo(registrationRef, "registration")}
-              className="bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-bold text-[10px] sm:text-sm md:text-lg lg:text-[1.2rem] px-5 py-2 md:px-8 md:py-3 rounded-full transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,107,53,0.6)] shadow-[0_4px_15px_rgba(255,107,53,0.4)] uppercase tracking-wider"
+              className="bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-bold text-xs sm:text-base md:text-xl lg:text-[1.5rem] px-6 py-3 md:px-10 md:py-4 rounded-full transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(255,107,53,0.6)] shadow-[0_4px_15px_rgba(255,107,53,0.4)] uppercase tracking-wider"
             >
               Garanta seu ingresso!
             </button>
