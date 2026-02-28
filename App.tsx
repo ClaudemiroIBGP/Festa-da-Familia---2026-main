@@ -348,11 +348,11 @@ export default function App() {
 
       {/* Hero - Novo Modelo de Banner */}
       <section className="relative overflow-hidden w-full bg-white">
-        <div className="relative w-full max-w-[1920px] mx-auto">
+        <div className="relative w-full max-w-[1920px] mx-auto h-[250px] sm:h-[350px] md:h-[450px] lg:h-[520px]">
           <img 
             src="espaco/16.webp" 
             alt="VI Festa da Família IBGP - 2026" 
-            className="w-full h-auto block"
+            className="w-full h-full block object-cover object-center"
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -360,17 +360,17 @@ export default function App() {
             }}
           />
           
-          <div className="absolute inset-0 flex flex-col justify-center items-center p-4">
+          <div className="absolute inset-0 flex flex-col justify-center items-center p-4 bg-black/5">
             <img 
               src="LOGO FESTA DA FAMILIA IBGP..png" 
               alt="Logo Festa da Família" 
-              className="w-[50%] sm:w-[40%] md:w-[30%] lg:w-[25%] h-auto drop-shadow-[0_8px_25px_rgba(0,0,0,0.4)]"
+              className="w-[55%] sm:w-[45%] md:w-[35%] lg:w-[30%] h-auto drop-shadow-[0_8px_25px_rgba(0,0,0,0.4)]"
               referrerPolicy="no-referrer"
             />
           </div>
 
           {/* Botão no canto inferior direito conforme imagem de referência */}
-          <div className="absolute bottom-[8%] right-[5%] z-20">
+          <div className="absolute bottom-[10%] right-[5%] z-20">
             <button 
               onClick={() => scrollTo(registrationRef, "registration")}
               className="bg-[#ff8a3d] text-white font-bold text-[10px] sm:text-sm md:text-lg lg:text-xl px-4 py-2 md:px-10 md:py-4 rounded-2xl transition-all hover:scale-105 hover:shadow-[0_8px_25px_rgba(255,138,61,0.5)] shadow-lg uppercase tracking-wider"
