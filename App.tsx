@@ -348,7 +348,7 @@ export default function App() {
 
       {/* Hero - Novo Modelo de Banner */}
       <section className="relative overflow-hidden w-full bg-white">
-        <div className="relative w-full max-w-[1920px] mx-auto h-[230px] sm:h-[320px] md:h-[410px] lg:h-[490px]">
+        <div className="relative w-full max-w-[1920px] mx-auto h-[150px] sm:h-[220px] md:h-[300px] lg:h-[350px]">
           <img 
             src="espaco/16.webp" 
             alt="VI Festa da Família IBGP - 2026" 
@@ -364,7 +364,7 @@ export default function App() {
             <img 
               src="LOGO FESTA DA FAMILIA IBGP..png" 
               alt="Logo Festa da Família" 
-              className="w-[55%] sm:w-[45%] md:w-[35%] lg:w-[30%] h-auto drop-shadow-[0_8px_25px_rgba(0,0,0,0.4)]"
+              className="w-[50%] sm:w-[40%] md:w-[30%] lg:w-[25%] h-auto drop-shadow-[0_8px_25px_rgba(0,0,0,0.4)]"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -373,7 +373,7 @@ export default function App() {
           <div className="absolute bottom-[10%] right-[5%] z-20">
             <button 
               onClick={() => scrollTo(registrationRef, "registration")}
-              className="bg-[#ff8a3d] text-white font-bold text-[10px] sm:text-sm md:text-lg lg:text-xl px-4 py-2 md:px-10 md:py-4 rounded-2xl transition-all hover:scale-105 hover:shadow-[0_8px_25px_rgba(255,138,61,0.5)] shadow-lg uppercase tracking-wider"
+              className="bg-[#ff8a3d] text-white font-bold text-[8px] sm:text-xs md:text-sm lg:text-lg px-3 py-1.5 md:px-8 md:py-3 rounded-xl transition-all hover:scale-105 hover:shadow-[0_8px_25px_rgba(255,138,61,0.5)] shadow-lg uppercase tracking-wider"
             >
               Garanta seu ingresso!
             </button>
