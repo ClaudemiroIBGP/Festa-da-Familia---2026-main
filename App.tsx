@@ -326,7 +326,7 @@ export default function App() {
             <img 
               src="ID Visual Graça e Paz 2024-01.png" 
               alt="Logo Graça e Paz" 
-              className="h-16 md:h-20 object-contain"
+              className="h-20 md:h-25 object-contain"
               referrerPolicy="no-referrer"
             />
           </div>
