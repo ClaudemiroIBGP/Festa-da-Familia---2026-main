@@ -348,11 +348,11 @@ export default function App() {
 
       {/* Hero - Novo Modelo de Banner */}
       <section className="relative overflow-hidden w-full bg-white">
-        <div className="relative w-full max-w-[1920px] mx-auto h-[150px] sm:h-[220px] md:h-[300px] lg:h-[350px]">
+        <div className="relative w-full max-w-[1920px] mx-auto h-[150px] sm:h-[220px] md:h-[300px] lg:h-[350px] bg-gray-900 flex items-center justify-center">
           <img 
             src="espaco/16.webp" 
             alt="VI Festa da Família IBGP - 2026" 
-            className="w-full h-full block object-cover object-center"
+            className="max-w-full max-h-full block object-contain"
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -360,7 +360,7 @@ export default function App() {
             }}
           />
           
-          <div className="absolute inset-0 flex flex-col justify-center items-center p-4 bg-black/5">
+          <div className="absolute inset-0 flex flex-col justify-center items-center p-4 bg-black/10">
             <img 
               src="LOGO FESTA DA FAMILIA IBGP..png" 
               alt="Logo Festa da Família" 
