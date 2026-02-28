@@ -366,7 +366,7 @@ export default function App() {
             }}
           />
           
-          <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/10 flex flex-col justify-center items-center text-center p-4 md:p-6">
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 md:p-6">
             <h1 className="font-black text-xl sm:text-3xl md:text-4xl lg:text-[2.8rem] text-white drop-shadow-[2px_2px_8px_rgba(0,0,0,0.7)] mb-2 md:mb-4 leading-[1.1] uppercase tracking-tight font-['Arial_Black',_Arial,_sans-serif]">
               VI Festa da Família IBGP - 2026
             </h1>
@@ -412,7 +412,7 @@ export default function App() {
               <div key={setIdx} className="flex gap-6">
                 {[
                   "20250501_085107.jpg", "20250501_114217.jpg", "20250501_114951.jpg", 
-                  "20250501_115001.jpg", "20250501_154937.jpg", "foto1.jpeg", 
+                  "20250501_154937.jpg", "foto1.jpeg", 
                   "foto2.jpeg", "foto3.jpeg"
                 ].map((img, i) => (
                   <motion.div 
