@@ -356,7 +356,6 @@ export default function App() {
         {/* Mosaico Justaposto de Fundo */}
         <div className="absolute inset-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0.5 opacity-50">
           {[
-            { src: "16.webp", span: "col-span-2 row-span-2" },
             { src: "20250501_085107.jpg", span: "col-span-1 row-span-1" },
             { src: "20250501_114217.jpg", span: "col-span-1 row-span-2" },
             { src: "20250501_114951.jpg", span: "col-span-2 row-span-1" },
@@ -365,7 +364,6 @@ export default function App() {
             { src: "foto2.jpeg", span: "col-span-1 row-span-1" },
             { src: "foto3.jpeg", span: "col-span-2 row-span-1" },
             { src: "foto4.jpeg", span: "col-span-1 row-span-2" },
-            { src: "16.webp", span: "col-span-1 row-span-1" }
           ].map((img, i) => (
             <div key={i} className={`${img.span} relative overflow-hidden`}>
               <img 
@@ -436,15 +434,12 @@ export default function App() {
           <div className="max-w-5xl mx-auto mb-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[250px]">
               {[
-                { src: "7.webp", span: "col-span-2 row-span-2" },
-                { src: "8.webp", span: "col-span-2 row-span-2" },
-                { src: "10.webp", span: "col-span-2 row-span-2" },
-                { src: "16.webp", span: "col-span-2 row-span-2" },
-                { src: "EF.webp", span: "col-span-1 row-span-1" },
-                { src: "unnamed (1).webp", span: "col-span-1 row-span-1" },
-                { src: "unnamed (3).webp", span: "col-span-1 row-span-1" },
-                { src: "unnamed (4).webp", span: "col-span-1 row-span-1" },
-                { src: "unnamed.webp", span: "col-span-2 row-span-1" }
+                { src: "espaço/7.webp", span: "col-span-2 row-span-2" },
+                { src: "espaço/EF.webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed (1).webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed (3).webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed (4).webp", span: "col-span-1 row-span-1" },
+                { src: "espaço/unnamed.webp", span: "col-span-2 row-span-1" }
               ].map((img, i) => (
                 <div 
                   key={i} 
@@ -456,6 +451,13 @@ export default function App() {
                       alt={`Espaço ${i}`} 
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        // Tenta sem o prefixo da pasta se falhar
+                        if (target.src.includes('espaço/')) {
+                          target.src = target.src.split('espaço/')[1];
+                        }
+                      }}
                     />
                   </div>
                   {/* Overlay estilo Instagram */}
