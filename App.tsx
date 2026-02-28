@@ -453,13 +453,6 @@ export default function App() {
                       alt={`Espaço ${i}`} 
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        // Fallback para tentar sem acento se falhar
-                        const target = e.target as HTMLImageElement;
-                        if (target.src.includes('espaço')) {
-                          target.src = target.src.replace('espaço', 'espaco');
-                        }
-                      }}
                     />
                   </div>
                   {/* Overlay estilo Instagram */}
