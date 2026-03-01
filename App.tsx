@@ -348,11 +348,11 @@ export default function App() {
 
       {/* Hero - Novo Modelo de Banner */}
       <section className="relative overflow-hidden w-full bg-white">
-        <div className="relative w-full max-w-[1920px] mx-auto h-[150px] sm:h-[280px] md:h-[360px] lg:h-[400px] bg-gray-900 flex items-center justify-center">
+        <div className="relative w-full max-w-[1920px] mx-auto h-[150px] sm:h-[220px] md:h-[300px] lg:h-[350px] flex items-center justify-center">
           <img 
-            src="espaco/17723201995709.png" 
+            src="17723201995709.png" 
             alt="VI Festa da Família IBGP - 2026" 
-            className="max-w-full max-h-full block object-contain"
+            className="w-full h-full block object-cover object-center"
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
