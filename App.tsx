@@ -350,7 +350,7 @@ export default function App() {
       <section className="relative overflow-hidden w-full bg-white">
         <div className="relative w-full max-w-[1920px] mx-auto h-[150px] sm:h-[220px] md:h-[300px] lg:h-[350px] flex items-center justify-center">
           <img 
-            src="17723201995709.png" 
+            src="espaco/17723201995709.png" 
             alt="VI Festa da Família IBGP - 2026" 
             className="w-full h-full block object-cover object-center"
             referrerPolicy="no-referrer"
