@@ -382,20 +382,6 @@ export default function App() {
         </div>
       </section>
 
-<div className="w-full flex justify-center bg-white py-6">
-  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-center font-bold shadow-xl">
-    
-    <div className="text-sm sm:text-base md:text-lg">
-      📅 01 de maio de 2026
-    </div>
-
-    <div className="text-sm sm:text-base md:text-lg mt-1">
-      ⏰ das 8h às 18h
-    </div>
-
-  </div>
-</div>
-      
       {/* Sobre */}
       <section ref={aboutRef} className="py-16 bg-white px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-12">
@@ -406,6 +392,21 @@ export default function App() {
             <p className="text-lg text-gray-700 leading-relaxed">Com atividades para todas as idades, é um dia memorável onde famílias podem se unir em amor, paz e alegria.</p>
           </div>
         </div>
+
+  <div className="w-full flex justify-center bg-white py-6">
+  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-9 py-3 rounded-xl text-center font-bold shadow-xl">
+    
+  <div className="text-sm sm:text-base md:text-lg">
+      📅 01 de maio de 2026
+  </div>
+
+  <div className="text-sm sm:text-base md:text-lg mt-1">
+      ⏰ das 8h às 18h
+  </div>
+
+  </div>
+  </div>
+      
 
         {/* Fita de Filme (Marquee) em Alta Resolução */}
         <div className="relative flex items-center overflow-hidden py-8">
