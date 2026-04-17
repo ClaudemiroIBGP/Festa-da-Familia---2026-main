@@ -394,7 +394,7 @@ export default function App() {
         </div>
 
   <div className="w-full flex justify-center bg-white py-6">
-  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-9 py-3 rounded-xl text-center font-bold shadow-xl">
+  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-12 py-3 rounded-xl text-center font-bold shadow-xl">
     
   <div className="text-sm sm:text-base md:text-lg">
       📅 01 de maio de 2026
