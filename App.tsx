@@ -360,13 +360,17 @@ export default function App() {
             }}
           />
           
-          <div className="absolute inset-0 flex flex-col justify-center items-center p-4 bg-black/10">
-            <img 
-              src="LOGO FESTA DA FAMILIA IBGP..png" 
-              alt="Logo Festa da Família" 
-              className="w-[50%] sm:w-[40%] md:w-[30%] lg:w-[25%] h-auto drop-shadow-[0_8px_25px_rgba(0,0,0,0.4)]"
-              referrerPolicy="no-referrer"
-            />
+          <div className="absolute inset-0 flex flex-col justify-center items-center p-4 bg-black/30">
+          <img 
+            src="LOGO FESTA DA FAMILIA IBGP..png" 
+            alt="Logo Festa da Família" 
+            className="w-[50%] sm:w-[40%] md:w-[30%] lg:w-[25%] h-auto drop-shadow-[0_8px_25px_rgba(0,0,0,0.4)]"
+            referrerPolicy="no-referrer"
+          />
+        
+          <div className="mt-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-sm sm:text-base md:text-lg font-bold shadow-xl">
+            📅 01 de maio de 2026 • ⏰ das 8h às 18h
+          </div>
           </div>
 
           {/* Botão no canto inferior direito conforme imagem de referência */}
