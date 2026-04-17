@@ -382,6 +382,20 @@ export default function App() {
         </div>
       </section>
 
+<div className="w-full flex justify-center bg-white py-6">
+  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-center font-bold shadow-xl">
+    
+    <div className="text-sm sm:text-base md:text-lg">
+      📅 01 de maio de 2026
+    </div>
+
+    <div className="text-sm sm:text-base md:text-lg mt-1">
+      ⏰ das 8h às 18h
+    </div>
+
+  </div>
+</div>
+      
       {/* Sobre */}
       <section ref={aboutRef} className="py-16 bg-white px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto text-center mb-12">
@@ -432,12 +446,7 @@ export default function App() {
         </div>
       </section>
 
-{/* DATA DO EVENTO */}
-<div className="w-full flex justify-center bg-white py-6">
-  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-sm sm:text-base md:text-lg font-bold shadow-xl">
-    📅 01 de maio de 2026 • ⏰ das 8h às 18h
-  </div>
-</div>
+
 
       {/* Atividades */}
       <section ref={activitiesRef} className="py-20 bg-gradient-to-br from-green-50 to-blue-50 px-4">
