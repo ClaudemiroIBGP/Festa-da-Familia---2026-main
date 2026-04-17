@@ -368,10 +368,7 @@ export default function App() {
             referrerPolicy="no-referrer"
           />
         
-          <div className="mt-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-sm sm:text-base md:text-lg font-bold shadow-xl">
-            📅 01 de maio de 2026 • ⏰ das 8h às 18h
-          </div>
-          </div>
+         </div>
 
           {/* Botão no canto inferior direito conforme imagem de referência */}
           <div className="absolute bottom-[10%] right-[5%] z-20">
@@ -435,6 +432,12 @@ export default function App() {
         </div>
       </section>
 
+{/* DATA DO EVENTO */}
+<div className="w-full flex justify-center bg-white py-6">
+  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-sm sm:text-base md:text-lg font-bold shadow-xl">
+    📅 01 de maio de 2026 • ⏰ das 8h às 18h
+  </div>
+</div>
 
       {/* Atividades */}
       <section ref={activitiesRef} className="py-20 bg-gradient-to-br from-green-50 to-blue-50 px-4">
